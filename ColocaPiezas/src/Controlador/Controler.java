@@ -7,10 +7,11 @@ import Modelo.Posicion;
 
 import java.util.ArrayList;
 
-public class Controler {
+public class Controler implements ControlInterface{
 
     private ArrayList<Pieza> piezas;
     private ModelInterface modelo;
+    private boolean solucion = false, colocada = false;
 
     public Controler(){
         piezas = new ArrayList<>();
@@ -42,41 +43,45 @@ public class Controler {
         return false;
     }
 
-    private void colocarPiezasRecursivo(int nPieza){
-        Posicion[] posicionesLibres = modelo.getPosLibres();
-        boolean solucion = false;
-        for (int pos = 0; pos < posicionesLibres.length && piezas.size() > 0; pos++){
-            Posicion posicion = posicionesLibres[pos];
+    private boolean colocarPiezasRecursivo(int nPieza){
+        Posicion[] posLibres = modelo.getPosLibres();
+        int flagP = 0;
+        solucion = false;
+        while (nPieza < piezas.size() && flagP < posLibres.length && !solucion) {
             Pieza pieza = piezas.remove(nPieza);
-            if (modelo.colocarPieza(posicion, pieza)){
-                if (piezas.size() > 0){
-                    colocarPiezasRecursivo(++nPieza);
-                    if (!solucion){
-                        modelo.quitarPieza(posicion, pieza);
+            Posicion coordenadas = new Posicion(0,0);
+            while (!colocada && flagP < posLibres.length) {
+                coordenadas = posLibres[flagP];
+                colocada = modelo.colocarPieza(coordenadas, pieza);
+                flagP++;
+            }
+            colocada = false;
+            //Print(tablero);
+            //Thread.sleep(1000);
+            //this.repaint();
+            if (nPieza < piezas.size() && modelo.piezaColocada(pieza)) {
+                solucion = colocarPiezasRecursivo(nPieza + 1);
+                if (!solucion) {
+                    modelo.quitarPieza(coordenadas, pieza);
+
+                    //Print(tablero);
+                    //Thread.sleep(1000);
+                    //this.repaint();
+                    if (flagP < posLibres.length) {
+                        flagP++;
                     }
+
                 }
             }
         }
-        if (!true){
-            solucion = true;
-        } else{
-            solucion = false;
+        if (nPieza < piezas.size()) {
+            boolean ret = true;
+            for (Pieza pieza : piezas) {
+                ret = ret && modelo.piezaColocada(pieza);
+            }
+            return ret;
+        } else {
+            return true;
         }
-        /*
-          Inicialitzar el conjunt d’operadors possibles per a l’estat actual;
-          encertat:=false; {*s’actualitza a true un cop s’ha obtingut una solucio completa a aquest nivell de recursió*}
-          while (solucio_incompleta i existeixen operadors per aplicar) do begin
-            seleccionar un operador no aplicat per aplicar a estat_actual;
-            if estat_resultant és acceptable then begin
-                anotar-lo;
-                if solució_incompleta then begin
-                    assajar(estat_resultant);
-                    if not(encertat) then eliminar anotacio
-                end if
-            end if
-          end while
-          if not(solucio_incompleta) then encertat:=true
-          else encertat:=false
-         */
     }
 }
