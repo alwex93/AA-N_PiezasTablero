@@ -1,14 +1,16 @@
 package Modelo;
 
-public class Tablero {
+import java.util.ArrayList;
+
+public class Tablero implements ModelInterface{
 
     private int[][] tablero;
-    private static int DEFAULT = 9;
+    private static int DEFAULT = 8;
     private int dimension;
     private int posLibres;
 
     private static int ORDER_COLOCAR = -1;
-    private static int ORDER_QUITAR = 0;
+    private static int ORDER_QUITAR = 1;
 
     public Tablero(){
         tablero = new int[DEFAULT][DEFAULT];
@@ -27,78 +29,127 @@ public class Tablero {
         posLibres = tablero.length;
     }
 
-    public void colocarPieza(Modelo.Posicion pos, Pieza pieza){
+    public boolean colocarPieza(Posicion pos, Pieza pieza){
+        marcado(pieza, pos, ORDER_COLOCAR);
         tablero[pos.getX()][pos.getY()] = pieza.getValue();
-        colocar(pieza);
+        pieza.colocar();
+        return pieza.isColocada();
     }
 
-    private void colocar(Pieza pieza){
-        switch (pieza.getValue()){
-
-        }
-    }
-
-    public void quitarPieza(Modelo.Posicion pos, Pieza pieza){
+    public void quitarPieza(Posicion pos, Pieza pieza){
+        marcado(pieza, pos, ORDER_QUITAR);
         tablero[pos.getX()][pos.getY()] = 0;
+        pieza.quitar();
     }
 
-    private void marcarHorizontal(int order, Modelo.Posicion piezaPos){
+    private void marcado(Pieza pieza, Posicion pos, int order){
+        switch (pieza.getValue()){
+            case 'D':
+                marcarHorizontal(order, pos);
+                marcarVertical(order, pos);
+                marcarDiagonalDerecha(order, pos);
+                marcarDiagonalIzquierda(order, pos);
+                break;
+            case 'T':
+                marcarHorizontal(order, pos);
+                marcarVertical(order, pos);
+                break;
+            case 'A':
+                marcarDiagonalDerecha(order, pos);
+                marcarDiagonalIzquierda(order, pos);
+                break;
+            case '1':
+                break;
+            case '2':
+                break;
+        }
+    }
+
+
+    private void marcarHorizontal(int order, Posicion piezaPos){
         for (int columna = 0; columna < dimension; columna++){
-            tablero[piezaPos.getX()][columna] = order;
+            tablero[piezaPos.getX()][columna] += order;
         }
         if (order == ORDER_COLOCAR){
             posLibres -= dimension;
         }
     }
 
-    private void marcarVertical(int order, Modelo.Posicion piezaPos){
+    private void marcarVertical(int order, Posicion piezaPos){
         for (int fila = 0; fila < dimension; fila++){
-            tablero[fila][piezaPos.getY()] = order;
+            tablero[fila][piezaPos.getY()] += order;
         }
         if (order == ORDER_COLOCAR){
             posLibres -= dimension;
         }
     }
 
-    private void marcarDiagonalDerecha(int order, Modelo.Posicion piezaPos){
+    private void marcarDiagonalDerecha(int order, Posicion piezaPos){
         int posAmenazas = 0;
-        for (int fila = piezaPos.getX() - 1; fila >= 0; fila--){
-            for (int columna = piezaPos.getY() + 1; columna < dimension; columna++){
-                tablero[fila][columna] = order;
-                posAmenazas++;
-            }
+        int fila = piezaPos.getX();
+        int columna = piezaPos.getY();
+
+        for(int d = 0; fila - d >= 0 && columna + d < dimension; d++){
+            tablero[fila - d][columna + d] += order;
         }
-        for (int fila = piezaPos.getX() + 1; fila < dimension; fila++){
-            for (int columna = piezaPos.getY() - 1; columna >= 0; columna--){
-                tablero[fila][columna] = order;
-                posAmenazas++;
-            }
+
+        for(int d = 0; fila + d < dimension && columna - d >= 0; d++){
+            tablero[fila + d][columna - d] += order;
         }
+
         if (order == ORDER_COLOCAR){
             posLibres -= posAmenazas;
         }
     }
 
-    private void marcarDiagonalIzquierda(int order, Modelo.Posicion piezaPos){
+    private void marcarDiagonalIzquierda(int order, Posicion piezaPos){
         int posAmenazas = 0;
-        for (int fila = piezaPos.getX() + 1; fila < dimension; fila++){
-            for (int columna = piezaPos.getY() + 1; columna < dimension; columna++){
-                tablero[fila][columna] = order;
-                posAmenazas++;
-            }
+        int fila = piezaPos.getX();
+        int columna = piezaPos.getY();
+
+        for(int d = 0; fila + d >= 0 && columna + d >= 0; d--){
+            tablero[fila + d][columna + d] += order;
         }
-        for (int fila = piezaPos.getX() - 1; fila >= 0; fila--){
-            for (int columna = piezaPos.getY() - 1; columna >= 0; columna--){
-                tablero[fila][columna] = order;
-                posAmenazas++;
-            }
+
+        for(int d = 0; fila + d < dimension && columna + d < dimension; d++){
+            tablero[fila + d][columna + d] += order;
         }
+
         if (order == ORDER_COLOCAR){
             posLibres -= posAmenazas;
         }
     }
 
-    public int getPosLibres(){
-        return posLibres;
+    public ArrayList<Posicion> getPosLibres(){
+        ArrayList<Posicion> libres = new ArrayList<>();
+        for(int fila = 0; fila < dimension; fila++){
+            for(int columna = 0; columna < dimension; columna++){
+                if(tablero[fila][columna] == 0){
+                    libres.add(new Posicion(fila, columna));
+                }
+            }
+        }
+        return libres;
+    }
+
+    public boolean piezaColocada(Pieza pieza) {
+        return pieza.isColocada();
+    }
+
+    public void print() {
+        System.out.println("Tablero: \n");
+        for (int[] pro1 : tablero) {
+            for (int y = 0; y < tablero.length; y++) {
+                if (pro1[y] == 0){
+                    System.out.print((char)-1 + " ");
+                } else if (pro1[y] < 0){
+                    System.out.print("X ");
+                } else {
+                    System.out.print((char)pro1[y] + " ");
+                }
+            }
+            System.out.println(" ");
+        }
+        System.out.println("\n\n");
     }
 }

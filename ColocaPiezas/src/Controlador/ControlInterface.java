@@ -1,7 +1,11 @@
 package Controlador;
 
+import Modelo.Pieza;
+
+import java.util.ArrayList;
+
 public interface ControlInterface {
 
-    void cargarPiezas(int damas, int torres, int alfil, int int1, int inv2);
-    boolean colocarPiezas();
+    boolean colocarPiezas(Pieza[] piezas);
+
 }

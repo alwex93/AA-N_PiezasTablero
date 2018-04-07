@@ -1,9 +1,12 @@
 package Modelo;
 
+import java.util.ArrayList;
+
 public interface ModelInterface {
 
-    Modelo.Posicion[] getPosLibres();
-    void quitarPieza(Modelo.Posicion pos, Pieza pieza);
-    boolean colocarPieza(Modelo.Posicion pos, Pieza pieza);
+    ArrayList<Posicion> getPosLibres();
+    void quitarPieza(Posicion pos, Pieza pieza);
+    boolean colocarPieza(Posicion pos, Pieza pieza);
     boolean piezaColocada(Pieza pieza);
+    void print();
 }
