@@ -1,5 +1,8 @@
 package Modelo;
 
+import javax.swing.*;
+import java.awt.*;
+
 public abstract class Pieza {
 
     private char value;
@@ -31,5 +34,8 @@ public abstract class Pieza {
         return colocada;
     }
 
+    public Image getImage(){
+        return new ImageIcon(img).getImage();
+    }
 
 }

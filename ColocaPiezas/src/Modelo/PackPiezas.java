@@ -1,3 +1,5 @@
+package Modelo;
+
 import Modelo.Pieza;
 import Modelo.Piezas.*;
 

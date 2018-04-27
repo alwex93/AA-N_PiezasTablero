@@ -18,6 +18,10 @@ public class Controler implements ControlInterface{
         modelo = new Tablero();
     }
 
+    public Controler(int dim){
+        modelo = new Tablero(dim);
+    }
+
     public boolean colocarPiezas(Pieza[] piezas){
         if (piezas.length > 0){
             this.piezas = piezas;

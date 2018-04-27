@@ -1,5 +1,9 @@
 package Modelo;
 
+import Modelo.Piezas.*;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Tablero implements ModelInterface{
@@ -152,4 +156,34 @@ public class Tablero implements ModelInterface{
         }
         System.out.println("\n\n");
     }
+
+    @Override
+    public PackPiezas getPack(int damas, int torres, int alfil, int inv1, int inv2) {
+        return new PackPiezas(damas, torres, alfil, inv1, inv2);
+    }
+
+    @Override
+    public int getLenght() {
+        return dimension;
+    }
+
+    @Override
+    public Image getSquare(Posicion pos) {
+        char caracter = (char) tablero[pos.getX()][pos.getY()];
+        switch (caracter) {
+            case 'D':
+                return new Dama().getImage();
+            case 'A':
+                return new Alfil().getImage();
+            case 'T':
+                return new Torre().getImage();
+            case 'L':
+                return new Inv1().getImage();
+            case 'H':
+                return new Inv2().getImage();
+            default: return null;
+        }
+    }
+
+
 }
