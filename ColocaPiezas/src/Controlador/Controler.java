@@ -5,29 +5,46 @@ import Modelo.Pieza;
 import Modelo.Piezas.Dama;
 import Modelo.Posicion;
 import Modelo.Tablero;
+import Vista.Seleccionador;
+import Vista.VistaIInterface;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Controler implements ControlInterface{
 
     private Pieza[] piezas;
     private ModelInterface modelo;
+    private VistaIInterface vista;
     private boolean solucion = false, colocada = false;
 
     public Controler(){
         modelo = new Tablero();
+        vista = new Seleccionador();
     }
 
     public Controler(int dim){
         modelo = new Tablero(dim);
+        vista = new Seleccionador();
     }
 
-    public boolean colocarPiezas(Pieza[] piezas){
+    public boolean colocarPiezas(int dimension, Pieza[] piezas){
+        modelo.actualizarDimensionTablero(dimension);
         if (piezas.length > 0){
             this.piezas = piezas;
             return colocarPiezasRecursivo(0);
         }
         return false;
+    }
+
+    @Override
+    public void abrirVentanaDatos() {
+        //vista.abrirSeleccionador();
+    }
+
+    @Override
+    public Image[][] getTablero() {
+        return modelo.getTablero();
     }
 
     private boolean colocarPiezasRecursivo(int nPieza){

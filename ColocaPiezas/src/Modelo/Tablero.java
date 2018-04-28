@@ -2,7 +2,6 @@ package Modelo;
 
 import Modelo.Piezas.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -11,7 +10,6 @@ public class Tablero implements ModelInterface{
     private int[][] tablero;
     private static int DEFAULT = 8;
     private int dimension;
-    private int posLibres;
 
     private static int ORDER_COLOCAR = -1;
     private static int ORDER_QUITAR = 1;
@@ -19,7 +17,6 @@ public class Tablero implements ModelInterface{
     public Tablero(){
         tablero = new int[DEFAULT][DEFAULT];
         dimension = DEFAULT;
-        posLibres = tablero.length;
     }
 
     public Tablero(int dim){
@@ -30,7 +27,6 @@ public class Tablero implements ModelInterface{
             }
         }
         dimension = dim;
-        posLibres = tablero.length;
     }
 
     public boolean colocarPieza(Posicion pos, Pieza pieza){
@@ -74,22 +70,15 @@ public class Tablero implements ModelInterface{
         for (int columna = 0; columna < dimension; columna++){
             tablero[piezaPos.getX()][columna] += order;
         }
-        if (order == ORDER_COLOCAR){
-            posLibres -= dimension;
-        }
     }
 
     private void marcarVertical(int order, Posicion piezaPos){
         for (int fila = 0; fila < dimension; fila++){
             tablero[fila][piezaPos.getY()] += order;
         }
-        if (order == ORDER_COLOCAR){
-            posLibres -= dimension;
-        }
     }
 
     private void marcarDiagonalDerecha(int order, Posicion piezaPos){
-        int posAmenazas = 0;
         int fila = piezaPos.getX();
         int columna = piezaPos.getY();
 
@@ -100,14 +89,9 @@ public class Tablero implements ModelInterface{
         for(int d = 0; fila + d < dimension && columna - d >= 0; d++){
             tablero[fila + d][columna - d] += order;
         }
-
-        if (order == ORDER_COLOCAR){
-            posLibres -= posAmenazas;
-        }
     }
 
     private void marcarDiagonalIzquierda(int order, Posicion piezaPos){
-        int posAmenazas = 0;
         int fila = piezaPos.getX();
         int columna = piezaPos.getY();
 
@@ -117,10 +101,6 @@ public class Tablero implements ModelInterface{
 
         for(int d = 0; fila + d < dimension && columna + d < dimension; d++){
             tablero[fila + d][columna + d] += order;
-        }
-
-        if (order == ORDER_COLOCAR){
-            posLibres -= posAmenazas;
         }
     }
 
@@ -143,7 +123,7 @@ public class Tablero implements ModelInterface{
     public void print() {
         System.out.println("Tablero: \n");
         for (int[] pro1 : tablero) {
-            for (int y = 0; y < tablero.length; y++) {
+            for (int y = 0; y < dimension; y++) {
                 if (pro1[y] == 0){
                     System.out.print((char)-1 + " ");
                 } else if (pro1[y] < 0){
@@ -158,18 +138,23 @@ public class Tablero implements ModelInterface{
     }
 
     @Override
-    public PackPiezas getPack(int damas, int torres, int alfil, int inv1, int inv2) {
-        return new PackPiezas(damas, torres, alfil, inv1, inv2);
+    public void actualizarDimensionTablero(int nuevaDimension) {
+        tablero = new int[nuevaDimension][nuevaDimension];
+        dimension = nuevaDimension;
     }
 
     @Override
-    public int getLenght() {
-        return dimension;
+    public Image[][] getTablero() {
+        Image[][] imagenes = new Image[dimension][dimension];
+        for (int fila = 0; fila < dimension; fila++){
+            for (int columna = 0; columna < dimension; columna++){
+                imagenes[fila][columna] = getImagen((char) tablero[fila][columna]);
+            }
+        }
+        return imagenes;
     }
 
-    @Override
-    public Image getSquare(Posicion pos) {
-        char caracter = (char) tablero[pos.getX()][pos.getY()];
+    private Image getImagen(char caracter){
         switch (caracter) {
             case 'D':
                 return new Dama().getImage();
@@ -184,6 +169,4 @@ public class Tablero implements ModelInterface{
             default: return null;
         }
     }
-
-
 }

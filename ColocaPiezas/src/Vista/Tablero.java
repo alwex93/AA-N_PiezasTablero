@@ -1,17 +1,13 @@
 package Vista;
 
-import Modelo.ModelInterface;
-import Modelo.Posicion;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class Tablero extends JPanel{
 
-    ModelInterface modelo;
+    Image[][] tablero;
 
-    public Tablero(ModelInterface bd){
-        modelo = bd;
+    public Tablero(){
     }
 
 
@@ -21,9 +17,10 @@ public class Tablero extends JPanel{
         pintarPiezas(g);
         g.dispose();
     }
+
     private void pintarTablero (Graphics g){
-        for (int i = 0; i < modelo.getLenght(); i++) {
-            for (int j = 0;j< modelo.getLenght() ; j++) {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j< tablero.length ; j++) {
                 if((i+j)%2 == 0){
                     g.setColor(Color.WHITE);
                 }else{
@@ -34,15 +31,20 @@ public class Tablero extends JPanel{
             }
         }
     }
+
     private void pintarPiezas(Graphics g) {
         Image pieza;
-        for (int i = 0; i < modelo.getLenght(); i++) {
-            for (int j = 0; j < modelo.getLenght(); j++) {
-                pieza = modelo.getSquare(new Posicion(i, j));
+        for (int columna = 0; columna < tablero.length; columna++) {
+            for (int fila = 0; fila < tablero.length; fila++) {
+                pieza = tablero[fila][columna];
                 if (pieza != null){
-                    g.drawImage(pieza, i * 50, j * 50, this);
+                    g.drawImage(pieza, columna * 50, fila * 50, this);
                 }
             }
         }
+    }
+
+    public void setTablero(Image[][] tablero) {
+        this.tablero = tablero;
     }
 }

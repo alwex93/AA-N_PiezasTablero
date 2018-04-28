@@ -7,9 +7,6 @@ package Vista;
 
 import Controlador.ControlInterface;
 import Controlador.Controler;
-import Modelo.ModelInterface;
-import Modelo.PackPiezas;
-import Modelo.Tablero;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,17 +16,16 @@ import java.util.Calendar;
  *
  * @author dbq560
  */
-public class Seleccionador extends javax.swing.JFrame {
+public class Seleccionador extends javax.swing.JFrame implements VistaIInterface{
 
-    Calendar tarda = Calendar.getInstance();
+    private Calendar tarda = Calendar.getInstance();
     /**
      * Creates new form Mesa
      */
     public Seleccionador() {
         initComponents();
         this.setResizable(false);
-        modelo = new Tablero();
-        controler = new Controler();
+        setVisible(true);
     }
 
     /**
@@ -180,7 +176,7 @@ public class Seleccionador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtf_iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_iniciarActionPerformed
+    private void jtf_iniciarActionPerformed(java.awt.event.ActionEvent evt) {
         Reloj reloj = new Reloj();
         try {
             int lenght_table = Integer.parseInt(jtf_lenght_table.getText());
@@ -192,25 +188,23 @@ public class Seleccionador extends javax.swing.JFrame {
             int halcones = Integer.parseInt(jtf_halcones.getText());
 
             Mesa mesa = new Mesa(lenght_table);
-            modelo = new Tablero(lenght_table);
             controler = new Controler(lenght_table);
 
-            Vista.Tablero tablero = new Vista.Tablero(modelo);
-            PackPiezas piezas = modelo.getPack(reinas, alfiles, torres, halcones, lanceros);
+            Tablero tablero = new Tablero();
             mesa.add(tablero);
+
+            PackPiezas piezas = new PackPiezas(reinas, alfiles, torres, halcones, lanceros);
 
             long tardo = tarda.getTimeInMillis();
             reloj.Contar();
-            //try {
-            if (!controler.colocarPiezas(piezas.getPiezas())) {
+            if (!controler.colocarPiezas(lenght_table, piezas.getPiezas())) {
                 JOptionPane.showMessageDialog(null, "No hay solución para el problema");
             } else{
-                tablero.repaint();
+                tablero.setTablero(controler.getTablero());
+                mesa.repaint();
             }
-            /*} catch (InterruptedException ex) {
-                Logger.getLogger(Seleccionador.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
             reloj.Detener();
+
             String conv = String.valueOf(tardo);
             tiempo1.setText(reloj.getTiempo() + "." + conv.substring(0, 4));
             tiempo.setVisible(true);
@@ -220,7 +214,9 @@ public class Seleccionador extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Introduce valores numéricos");
         }
-    }//GEN-LAST:event_jtf_iniciarActionPerformed
+    }
+
+
 
     /**
      * @param args the command line arguments
@@ -247,7 +243,6 @@ public class Seleccionador extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new Seleccionador().setVisible(true));
     }
 
-    private ModelInterface modelo;
     private ControlInterface controler;
     private javax.swing.JTextField jtf_alfiles;
     private javax.swing.JTextField jtf_halcones;
@@ -257,5 +252,10 @@ public class Seleccionador extends javax.swing.JFrame {
     private javax.swing.JTextField jtf_torres;
     private javax.swing.JLabel tiempo;
     private javax.swing.JLabel tiempo1;
+
+    /*@Override
+    public void abrirSeleccionador() {
+        java.awt.EventQueue.invokeLater(() -> new Seleccionador().setVisible(true));
+    }*/
     // End of variables declaration//GEN-END:variables
 }
