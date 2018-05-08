@@ -23,7 +23,7 @@ public class Simbolo {
         this.frequencia += 1;
     }
 
-    public int getValor_ascii() {
+    public byte getValor_ascii() {
         return valor_ascii;
     }
 
@@ -57,6 +57,7 @@ public class Simbolo {
         return "Simbolo{" +
                 "valor_ascii=" + valor_ascii +
                 ", frequencia=" + frequencia +
-                ", letra=" + (char) valor_ascii;
+                ", letra=" + (char) valor_ascii +
+                '}';
     }
 }
