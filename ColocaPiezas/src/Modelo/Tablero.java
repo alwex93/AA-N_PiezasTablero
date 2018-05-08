@@ -44,27 +44,64 @@ public class Tablero implements ModelInterface{
 
     private void marcado(Pieza pieza, Posicion pos, int order){
         switch (pieza.getValue()){
-            case 'D':
+            case Dama.VALUE:
                 marcarHorizontal(order, pos);
                 marcarVertical(order, pos);
                 marcarDiagonalDerecha(order, pos);
                 marcarDiagonalIzquierda(order, pos);
                 break;
-            case 'T':
+            case Torre.VALUE:
                 marcarHorizontal(order, pos);
                 marcarVertical(order, pos);
                 break;
-            case 'A':
+            case Alfil.VALUE:
                 marcarDiagonalDerecha(order, pos);
                 marcarDiagonalIzquierda(order, pos);
                 break;
-            case '1':
+            case Lancero.VALUE:
+                marcadoLancero(order, pos);
                 break;
-            case '2':
+            case Halcon.VALUE:
+                marcadoHalcon(order,pos);
                 break;
         }
     }
 
+    private void marcadoHalcon(int order, Posicion piezaPos){
+        int rango = 2, alcance = 3, marca;
+        for (int it = 0; it < alcance; it++){
+            marca = it - 1;
+            if (dentroRango(piezaPos.getX() + marca) && dentroRango(piezaPos.getY() + rango)){
+                tablero[piezaPos.getX() + marca][piezaPos.getY() + rango] += order;
+            }
+            if (dentroRango(piezaPos.getX() + marca) && dentroRango(piezaPos.getY() - rango)){
+                tablero[piezaPos.getX() + marca][piezaPos.getY() - rango] += order;
+            }
+            if (dentroRango(piezaPos.getX() + rango) && dentroRango(piezaPos.getY() + marca)){
+                tablero[piezaPos.getX() + rango][piezaPos.getY() + marca] += order;
+            }
+            if (dentroRango(piezaPos.getX() - rango) && dentroRango(piezaPos.getY() + marca)){
+                tablero[piezaPos.getX() - rango][piezaPos.getY() + marca] += order;
+            }
+        }
+    }
+
+    private void marcadoLancero(int order, Posicion piezaPos){
+        int rango = 2, marca;
+        for (int it = 0; it < rango*2 + 1; it++){
+            marca = it - rango;
+            if (dentroRango(piezaPos.getX() + marca)){
+                tablero[piezaPos.getX() + marca][piezaPos.getY()] += order;
+            }
+            if (dentroRango(piezaPos.getY() + marca)){
+                tablero[piezaPos.getX()][piezaPos.getY() + marca] += order;
+            }
+        }
+    }
+
+    private boolean dentroRango(int valor){
+        return valor >= 0 && valor < dimension;
+    }
 
     private void marcarHorizontal(int order, Posicion piezaPos){
         for (int columna = 0; columna < dimension; columna++){
@@ -163,9 +200,9 @@ public class Tablero implements ModelInterface{
             case 'T':
                 return new Torre().getImage();
             case 'L':
-                return new Inv1().getImage();
+                return new Lancero().getImage();
             case 'H':
-                return new Inv2().getImage();
+                return new Halcon().getImage();
             default: return null;
         }
     }

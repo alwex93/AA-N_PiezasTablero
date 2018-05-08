@@ -3,8 +3,6 @@ package Vista;
 import Modelo.Pieza;
 import Modelo.Piezas.*;
 
-import java.util.ArrayList;
-
 public class PackPiezas {
 
     private int damas;
@@ -40,10 +38,10 @@ public class PackPiezas {
             piezas[pArray++] = new Alfil();
         }
         for (n = inv1; n > 0; n--){
-            piezas[pArray++] = new Inv1();
+            piezas[pArray++] = new Lancero();
         }
         for (n = inv2; n > 0; n--){
-            piezas[pArray++] = new Inv2();
+            piezas[pArray++] = new Halcon();
         }
         return piezas;
     }

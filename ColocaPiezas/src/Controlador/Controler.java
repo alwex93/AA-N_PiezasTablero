@@ -2,11 +2,9 @@ package Controlador;
 
 import Modelo.ModelInterface;
 import Modelo.Pieza;
-import Modelo.Piezas.Dama;
 import Modelo.Posicion;
 import Modelo.Tablero;
 import Vista.Seleccionador;
-import Vista.VistaIInterface;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,17 +13,14 @@ public class Controler implements ControlInterface{
 
     private Pieza[] piezas;
     private ModelInterface modelo;
-    private VistaIInterface vista;
     private boolean solucion = false, colocada = false;
 
     public Controler(){
         modelo = new Tablero();
-        vista = new Seleccionador();
     }
 
     public Controler(int dim){
         modelo = new Tablero(dim);
-        vista = new Seleccionador();
     }
 
     public boolean colocarPiezas(int dimension, Pieza[] piezas){

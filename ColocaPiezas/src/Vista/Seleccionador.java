@@ -16,7 +16,7 @@ import java.util.Calendar;
  *
  * @author dbq560
  */
-public class Seleccionador extends javax.swing.JFrame implements VistaIInterface{
+public class Seleccionador extends javax.swing.JFrame {
 
     private Calendar tarda = Calendar.getInstance();
     /**
@@ -46,8 +46,8 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
         jtf_reinas = new javax.swing.JTextField();
         jtf_alfiles = new javax.swing.JTextField();
         jtf_torres = new javax.swing.JTextField();
-        jtf_lanceros = new javax.swing.JTextField();
         jtf_halcones = new javax.swing.JTextField();
+        jtf_lanceros = new javax.swing.JTextField();
         JButton jtf_iniciar = new JButton();
         JLabel jLabel9 = new JLabel();
         jtf_lenght_table = new javax.swing.JTextField();
@@ -59,7 +59,7 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setText("Piezas de tablero");
 
-        jLabel2.setText("Reinas:");
+        jLabel2.setText("Damas:");
 
         jLabel4.setText("Alfiles");
 
@@ -75,9 +75,9 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
 
         jtf_torres.setText("0");
 
-        jtf_lanceros.setText("0");
-
         jtf_halcones.setText("0");
+
+        jtf_lanceros.setText("0");
 
         jtf_iniciar.setText("Iniciar");
         jtf_iniciar.addActionListener(this::jtf_iniciarActionPerformed);
@@ -123,8 +123,8 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
                                     .addComponent(jLabel8))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jtf_halcones)
                                     .addComponent(jtf_lanceros)
+                                    .addComponent(jtf_halcones)
                                     .addComponent(jtf_torres)
                                     .addComponent(jtf_alfiles)
                                     .addComponent(jtf_reinas, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))))
@@ -159,11 +159,11 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jtf_lanceros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtf_halcones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jtf_halcones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtf_lanceros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tiempo)
@@ -180,6 +180,7 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
         Reloj reloj = new Reloj();
         try {
             int lenght_table = Integer.parseInt(jtf_lenght_table.getText());
+            lenght_table = lenght_table < MIN_DIM ? MIN_DIM : lenght_table;
 
             int reinas = Integer.parseInt(jtf_reinas.getText());
             int alfiles = Integer.parseInt(jtf_alfiles.getText());
@@ -243,19 +244,15 @@ public class Seleccionador extends javax.swing.JFrame implements VistaIInterface
         java.awt.EventQueue.invokeLater(() -> new Seleccionador().setVisible(true));
     }
 
+    private final int MIN_DIM = 4;
+
     private ControlInterface controler;
     private javax.swing.JTextField jtf_alfiles;
-    private javax.swing.JTextField jtf_halcones;
     private javax.swing.JTextField jtf_lanceros;
+    private javax.swing.JTextField jtf_halcones;
     private javax.swing.JTextField jtf_reinas;
     private javax.swing.JTextField jtf_lenght_table;
     private javax.swing.JTextField jtf_torres;
     private javax.swing.JLabel tiempo;
     private javax.swing.JLabel tiempo1;
-
-    /*@Override
-    public void abrirSeleccionador() {
-        java.awt.EventQueue.invokeLater(() -> new Seleccionador().setVisible(true));
-    }*/
-    // End of variables declaration//GEN-END:variables
 }
