@@ -1,19 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador.HeapNodos;
 
 public class Nodo {
     private byte value;
     private int frecuencia;
     private Nodo cero, uno;
+    private boolean interno;
     
     public Nodo(byte value, int frecuencia) {
         this.value = value;
         this.frecuencia = frecuencia;
         cero = uno = null;
+        interno = false;
+    }
+
+    public Nodo(int frecuencia) {
+        this.frecuencia = frecuencia;
+        cero = uno = null;
+        interno = true;
     }
 
     public int compareTo(Nodo o) {
@@ -22,6 +25,10 @@ public class Nodo {
 
     public int getCompareValue(){
         return frecuencia;
+    }
+
+    public byte getId(){
+        return value;
     }
 
     public void setCero(Nodo cero){
@@ -40,14 +47,22 @@ public class Nodo {
         return uno;
     }
 
+    public boolean isInterno(){
+        return interno;
+    }
+
     @Override
     public String toString() {
-        return "Nodo{" +
-                ", valor=" + value +
-                ", frecuencia=" + frecuencia +
-                ", cero=" + cero.value +
-                ", uno=" + uno.value +
-                '}';
+        StringBuilder ret = new StringBuilder("Nodo{valor=").append(value)
+                .append(", frecuencia=").append(frecuencia)
+                .append(System.getProperty("line.separator"));
+        if (cero != null){
+            ret.append("0{").append(cero.toString()).append('}');
+        }
+        if (uno != null){
+            ret.append("1{").append(uno.toString()).append('}');
+        }
+        return ret.toString();
     }
 }
 

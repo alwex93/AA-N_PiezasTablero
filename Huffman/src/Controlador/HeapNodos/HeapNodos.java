@@ -19,8 +19,16 @@ public class HeapNodos {
         return new Nodo[] {cola.poll(), cola.poll()};
     }
 
+    public Nodo getNodo(){
+        return cola.poll();
+    }
+
     public boolean isEmpty(){
         return cola.isEmpty();
+    }
+
+    public boolean quedanNodos(){
+        return cola.size() > 1;
     }
 
 }

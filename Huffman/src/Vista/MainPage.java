@@ -4,12 +4,7 @@ import Controlador.Controler;
 import Modelo.Datos;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class MainPage extends JFrame{
     private JTextField textField1;
@@ -21,8 +16,6 @@ public class MainPage extends JFrame{
     private Datos modelo;
 
     public MainPage() {
-        modelo = new Datos();
-        controlador = new Controler(modelo);
         init();
         examinarButton.addActionListener(e -> {
             JFileChooser fc = new JFileChooser();
@@ -37,12 +30,13 @@ public class MainPage extends JFrame{
             }
         });
         comprimirButton.addActionListener(e -> {
+            modelo = new Datos();
+            controlador = new Controler(modelo);
             String path = textField1.getText();
             File fichero = new File(path);
             if (fichero.exists()){
-                controlador.readFile(fichero);
+                new ResultPage(modelo, fichero).setVisible(true);
             }
-            new ResultPage(modelo).setVisible(true);
         });
     }
 

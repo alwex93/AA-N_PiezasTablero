@@ -5,6 +5,7 @@ import Controlador.HeapNodos.HeapNodos;
 public class Datos implements InterfazModelo{
     private TablaFrecuencias tablaSimbolos;
     private HeapNodos heapNodos;
+    long fileLenght;
 
     private final int CHAR_POS = 0, FRECUENCY_POS = 1, HAFFMANCODE_POS = 2;
     private final String[] COLUMN_NAMES = {"Value(Caracter)", "Frecuencia", "Codigo Huffman"};
@@ -22,7 +23,7 @@ public class Datos implements InterfazModelo{
             simbolo = tablaSimbolos.getSimbolo(pos);
             data[pos][CHAR_POS] = simbolo.getValor_ascii() + "(" + (char) simbolo.getValor_ascii() + ")";
             data[pos][FRECUENCY_POS] = simbolo.getFrequencia();
-            data[pos][HAFFMANCODE_POS] = 0;
+            data[pos][HAFFMANCODE_POS] = simbolo.getHaffmanValue();
         }
         return data;
     }
@@ -53,12 +54,27 @@ public class Datos implements InterfazModelo{
     }
 
     @Override
-    public void changeElement(int posLower, int posGreater) {
-        tablaSimbolos.changeElement(posLower, posGreater);
+    public void setHaffmanValue(byte simbol, String value) {
+        tablaSimbolos.setValue(simbol, value);
+    }
+
+    @Override
+    public String getHaffmanValue(byte simbolo) {
+        return tablaSimbolos.getHuffmanValue(new Simbolo(simbolo));
     }
 
     @Override
     public String[] getColumnNames(){
         return COLUMN_NAMES;
+    }
+
+    @Override
+    public void setFileLenght(long lenght){
+        fileLenght = lenght;
+    }
+
+    @Override
+    public double getFileLenght() {
+        return fileLenght;
     }
 }
