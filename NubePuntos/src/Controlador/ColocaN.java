@@ -2,9 +2,7 @@ package Controlador;
 
 import Modelo.Datos;
 
-import java.math.BigDecimal;
-
-public class ColocaN {
+public class ColocaN implements ControlerInterface{
 
     private Datos modelo;
 

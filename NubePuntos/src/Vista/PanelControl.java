@@ -1,6 +1,7 @@
 package Vista;
 
 import Controlador.ColocaN;
+import Controlador.ControlerInterface;
 import Modelo.Datos;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ public class PanelControl extends JPanel{
     private JButton sol1, sol2, nuevosPuntos;
     private JTextField puntos;
     private Datos modelo;
-    private ColocaN controlerOpt;
+    private ControlerInterface controlerOpt;
     private PanelPintado paintPanel;
     private JLabel tiempoEjecucion;
     private JLabel labelTiempo;
