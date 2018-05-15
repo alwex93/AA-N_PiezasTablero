@@ -66,8 +66,13 @@ public class PanelControl extends JPanel{
         });
 
         nuevosPuntos.addActionListener(e -> {
-            modelo.generarPuntos(Integer.parseInt(puntos.getText()), paintPanel.PX, paintPanel.PY);
-            paintPanel.repaint();
+            try{
+                modelo.generarPuntos(Integer.parseInt(puntos.getText()), paintPanel.PX, paintPanel.PY);
+                paintPanel.repaint();
+            } catch(NumberFormatException er){
+                tiempoEjecucion.setText("Invalid Input");
+            }
+
         });
 
         add(sol1);

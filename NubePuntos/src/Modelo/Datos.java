@@ -8,15 +8,18 @@ public class Datos {
     private Punto[] puntos;
     private int cercano1, cercano2;
     private boolean hayCercanos;
+    private Random rnd;
 
     public Datos(int numPuntos, int maxX, int maxY){
         puntos = new Punto[numPuntos];
+        rnd = new Random(1993);
         generarPuntos(numPuntos, maxX, maxY);
         hayCercanos = false;
     }
 
     public Datos(Punto[] puntos){
         this.puntos = puntos;
+        rnd = new Random(1993);
     }
 
     public void exchangeNumbers(int i, int j) {
@@ -96,7 +99,6 @@ public class Datos {
 
     public void generarPuntos(int n, int maxX, int maxY){
         puntos = new Punto[n];
-        Random rnd = new Random(1993);
         for (int punto = 0; punto < n; punto++){
             puntos[punto] = new Punto(Math.abs(rnd.nextInt()) % maxX, Math.abs(rnd.nextInt()) % maxY);
         }
