@@ -9,6 +9,8 @@ import Modelo.Datos;
 import Vista.MainPage;
 import Vista.ResultPage;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author AndresOverflow
@@ -20,6 +22,8 @@ public class Huffman {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+
+        //System.out.println(new BigInteger("10000011", 2).toByteArray().toString());
         new MainPage().setVisible(true);
     }
     

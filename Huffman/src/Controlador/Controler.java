@@ -2,6 +2,7 @@ package Controlador;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import Controlador.HeapNodos.HeapNodos;
@@ -110,7 +111,7 @@ public class Controler implements InterfazControler{
         }while (!lista.isEmpty());
     }
 
-    public void comprimirFichero(File fichero){
+    public double comprimirFichero(File fichero){
         byte[] contenido = readFile(fichero);
         generarArbolHuffman();
         setHaffmanValues();
@@ -121,13 +122,8 @@ public class Controler implements InterfazControler{
         while (bruto.length() % 8 != 0){
             bruto.append("0");
         }
-        String binario = bruto.toString();
-        Byte[] compilado = new Byte[bruto.length()/8];
-        int limInf;
-        for(int pos = 0; pos < bruto.length()/8; pos++){
-            limInf = pos*8;
-            compilado[pos] = Byte.parseByte(binario.substring(limInf, limInf + 8));
-        }
-        System.out.println("Ori: " + contenido.length + " Despues: " + compilado.length);
+        System.out.println(bruto.length());
+        byte[] compilado = new BigInteger(bruto.toString(), 2).toByteArray();
+        return ((double)compilado.length/contenido.length)*100;
     }
 }

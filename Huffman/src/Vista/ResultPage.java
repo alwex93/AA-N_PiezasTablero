@@ -7,6 +7,7 @@ import Modelo.InterfazModelo;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class ResultPage extends JFrame{
@@ -31,15 +32,19 @@ public class ResultPage extends JFrame{
         long initTime;
         if(modelo != null){
             initTime = System.currentTimeMillis();
-            controler.comprimirFichero(fichero);
+            reloj.Contar();
+            proporcion.setText(redondear((long)controler.comprimirFichero(fichero)) + "%");
             reloj.Detener();
             chargeTableData();
-            tiempoEjecucion.setText(reloj.getTiempo() + "." + String.valueOf(System.currentTimeMillis() - initTime));
-            proporcion.setText(controler.getFileLenght());
+            tiempoEjecucion.setText(reloj.getTiempo() + "." + redondear(System.currentTimeMillis() - initTime).replace(".", ""));
         }
         add(panel);
         pack();
         setLocationRelativeTo(null);
+    }
+
+    private String redondear(long number){
+        return new BigDecimal(number).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
     }
 
     private void chargeTableData(){
