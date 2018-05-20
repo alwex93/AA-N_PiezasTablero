@@ -14,11 +14,6 @@ public class Tablero implements ModelInterface{
     private static int ORDER_COLOCAR = -1;
     private static int ORDER_QUITAR = 1;
 
-    public Tablero(){
-        tablero = new int[DEFAULT][DEFAULT];
-        dimension = DEFAULT;
-    }
-
     public Tablero(int dim){
         tablero = new int[dim][dim];
         for(int fila = 0; fila < dim; fila++){

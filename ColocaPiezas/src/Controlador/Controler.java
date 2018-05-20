@@ -15,10 +15,6 @@ public class Controler implements ControlInterface{
     private ModelInterface modelo;
     private boolean solucion = false, colocada = false;
 
-    public Controler(){
-        modelo = new Tablero();
-    }
-
     public Controler(int dim){
         modelo = new Tablero(dim);
     }
@@ -33,11 +29,6 @@ public class Controler implements ControlInterface{
     }
 
     @Override
-    public void abrirVentanaDatos() {
-        //vista.abrirSeleccionador();
-    }
-
-    @Override
     public Image[][] getTablero() {
         return modelo.getTablero();
     }
@@ -48,20 +39,17 @@ public class Controler implements ControlInterface{
         solucion = false;
         while (nPieza < piezas.length && flagP < posLibres.size() && !solucion) {
             Pieza pieza = piezas[nPieza];
-            Posicion coordenadas = new Posicion(0,0);
-            while (!colocada && flagP < posLibres.size()) {
+            Posicion coordenadas;
+            do {
                 coordenadas = posLibres.get(flagP);
                 colocada = modelo.colocarPieza(coordenadas, pieza);
                 flagP++;
-            }
+            }while (!colocada && flagP < posLibres.size());
             colocada = false;
-            modelo.print();
             if (nPieza < piezas.length && modelo.piezaColocada(pieza)) {
                 solucion = colocarPiezasRecursivo(nPieza + 1);
                 if (!solucion) {
                     modelo.quitarPieza(coordenadas, pieza);
-
-                    modelo.print();
                     if (flagP < posLibres.size()) {
                         flagP++;
                     }

@@ -24,7 +24,9 @@ public class Seleccionador extends javax.swing.JFrame {
      */
     public Seleccionador() {
         initComponents();
-        this.setResizable(false);
+        setTitle("Coloca Piezas");
+        setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
     }
 
@@ -44,8 +46,8 @@ public class Seleccionador extends javax.swing.JFrame {
         JLabel jLabel7 = new JLabel();
         JLabel jLabel8 = new JLabel();
         jtf_reinas = new javax.swing.JTextField();
-        jtf_alfiles = new javax.swing.JTextField();
         jtf_torres = new javax.swing.JTextField();
+        jtf_alfiles = new javax.swing.JTextField();
         jtf_halcones = new javax.swing.JTextField();
         jtf_lanceros = new javax.swing.JTextField();
         JButton jtf_iniciar = new JButton();
@@ -71,9 +73,9 @@ public class Seleccionador extends javax.swing.JFrame {
 
         jtf_reinas.setText("0");
 
-        jtf_alfiles.setText("0");
-
         jtf_torres.setText("0");
+
+        jtf_alfiles.setText("0");
 
         jtf_halcones.setText("0");
 
@@ -125,8 +127,8 @@ public class Seleccionador extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jtf_lanceros)
                                     .addComponent(jtf_halcones)
-                                    .addComponent(jtf_torres)
                                     .addComponent(jtf_alfiles)
+                                    .addComponent(jtf_torres)
                                     .addComponent(jtf_reinas, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))))
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
@@ -151,11 +153,11 @@ public class Seleccionador extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtf_alfiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtf_torres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jtf_torres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtf_alfiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -181,18 +183,14 @@ public class Seleccionador extends javax.swing.JFrame {
         try {
             int lenght_table = Integer.parseInt(jtf_lenght_table.getText());
             lenght_table = lenght_table < MIN_DIM ? MIN_DIM : lenght_table;
-
+            jtf_lenght_table.setText(String.valueOf(lenght_table));
             int reinas = Integer.parseInt(jtf_reinas.getText());
             int alfiles = Integer.parseInt(jtf_alfiles.getText());
             int torres = Integer.parseInt(jtf_torres.getText());
             int lanceros = Integer.parseInt(jtf_lanceros.getText());
             int halcones = Integer.parseInt(jtf_halcones.getText());
 
-            Mesa mesa = new Mesa(lenght_table);
             controler = new Controler(lenght_table);
-
-            Tablero tablero = new Tablero();
-            mesa.add(tablero);
 
             PackPiezas piezas = new PackPiezas(reinas, alfiles, torres, halcones, lanceros);
 
@@ -201,8 +199,13 @@ public class Seleccionador extends javax.swing.JFrame {
             if (!controler.colocarPiezas(lenght_table, piezas.getPiezas())) {
                 JOptionPane.showMessageDialog(null, "No hay solución para el problema");
             } else{
+                Mesa mesa = new Mesa(lenght_table);
+
+                Tablero tablero = new Tablero();
+                mesa.add(tablero);
                 tablero.setTablero(controler.getTablero());
                 mesa.repaint();
+                mesa.setVisible(true);
             }
             reloj.Detener();
 
@@ -210,7 +213,6 @@ public class Seleccionador extends javax.swing.JFrame {
             tiempo1.setText(reloj.getTiempo() + "." + conv.substring(0, 4));
             tiempo.setVisible(true);
             tiempo1.setVisible(true);
-            mesa.setVisible(true);
         } catch (NumberFormatException ex) {
 
             JOptionPane.showMessageDialog(null, "Introduce valores numéricos");
@@ -247,12 +249,12 @@ public class Seleccionador extends javax.swing.JFrame {
     private final int MIN_DIM = 4;
 
     private ControlInterface controler;
-    private javax.swing.JTextField jtf_alfiles;
+    private javax.swing.JTextField jtf_torres;
     private javax.swing.JTextField jtf_lanceros;
     private javax.swing.JTextField jtf_halcones;
     private javax.swing.JTextField jtf_reinas;
     private javax.swing.JTextField jtf_lenght_table;
-    private javax.swing.JTextField jtf_torres;
+    private javax.swing.JTextField jtf_alfiles;
     private javax.swing.JLabel tiempo;
     private javax.swing.JLabel tiempo1;
 }
