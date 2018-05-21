@@ -4,22 +4,27 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-public class Datos {
+public class Datos implements ModelInterface{
     private Punto[] puntos;
     private int cercano1, cercano2;
     private boolean hayCercanos;
     private Random rnd;
 
     public Datos(int numPuntos, int maxX, int maxY){
-        puntos = new Punto[numPuntos];
         rnd = new Random(1993);
+        puntos = new Punto[numPuntos];
         generarPuntos(numPuntos, maxX, maxY);
         hayCercanos = false;
+    }
+
+    public ModelInterface copiaModelo(ModelInterface data){
+        return new Datos(data);
     }
 
     public Datos(Punto[] puntos){
         this.puntos = puntos;
         rnd = new Random(1993);
+        hayCercanos = false;
     }
 
     public void exchangeNumbers(int i, int j) {
@@ -67,14 +72,6 @@ public class Datos {
         long distX = Math.abs(puntos[p1].getX() - puntos[p2].getX());
         long distY = Math.abs(puntos[p1].getY() - puntos[p2].getY());
         return new BigDecimal(distX  + distY).setScale(2, RoundingMode.HALF_UP).longValue();
-    }
-
-    public long getDistanciaMinima(){
-        if (hayCercanos){
-            return distancia(cercano1, cercano2);
-        } else {
-            return Long.MAX_VALUE;
-        }
     }
 
     public boolean hayCercanos(){

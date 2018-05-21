@@ -1,8 +1,10 @@
 package Vista;
 
 import Controlador.ColocaN;
+import Controlador.ColocaN2;
 import Controlador.ControlerInterface;
 import Modelo.Datos;
+import Modelo.ModelInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +12,7 @@ import java.awt.*;
 public class PanelControl extends JPanel{
     private JButton sol1, sol2, nuevosPuntos;
     private JTextField puntos;
-    private Datos modelo;
+    private ModelInterface modelo;
     private ControlerInterface controlerOpt;
     private PanelPintado paintPanel;
     private JLabel tiempoEjecucion;
@@ -24,11 +26,10 @@ public class PanelControl extends JPanel{
 
     public PanelControl(PanelPintado drawPanel, Datos modelo, int origX, int origY, int width){
         setBounds(origX, origY, width, WINDOW_HEIGHT);
-        setBackground(Color.BLUE);
+        setBackground(Color.CYAN);
         setVisible(true);
         init();
-        this.modelo = modelo;
-        controlerOpt = new ColocaN(modelo);
+        this.modelo = modelo.copiaModelo(modelo);
         paintPanel = drawPanel;
     }
 
@@ -41,7 +42,7 @@ public class PanelControl extends JPanel{
         nuevosPuntos = new JButton("Nuevos Puntos");
         puntos = new JTextField("10");
         labelTiempo = new JLabel("Tiempo de ejecución:");
-        tiempoEjecucion = new JLabel("hola");
+        tiempoEjecucion = new JLabel(" ");
 
 
         sol1.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -57,6 +58,17 @@ public class PanelControl extends JPanel{
         tiempoEjecucion.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH, BUTTON_HEIGHT);
 
         sol1.addActionListener(e -> {
+            controlerOpt = new ColocaN(modelo);
+            reloj = new Reloj();
+            reloj.Contar();
+            controlerOpt.distanciaMinima();
+            reloj.Detener();
+            paintPanel.repaint();
+            tiempoEjecucion.setText(reloj.getTiempo());
+        });
+
+        sol2.addActionListener(e -> {
+            controlerOpt = new ColocaN2(modelo);
             reloj = new Reloj();
             reloj.Contar();
             controlerOpt.distanciaMinima();
