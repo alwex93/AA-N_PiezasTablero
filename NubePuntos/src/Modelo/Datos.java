@@ -17,16 +17,6 @@ public class Datos implements ModelInterface{
         hayCercanos = false;
     }
 
-    public ModelInterface copiaModelo(ModelInterface data){
-        return new Datos(data);
-    }
-
-    public Datos(Punto[] puntos){
-        this.puntos = puntos;
-        rnd = new Random(1993);
-        hayCercanos = false;
-    }
-
     public void exchangeNumbers(int i, int j) {
         Punto temp = puntos[i];
         puntos[i] = puntos[j];

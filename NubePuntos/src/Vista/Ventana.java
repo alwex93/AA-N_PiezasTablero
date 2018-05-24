@@ -1,11 +1,8 @@
 package Vista;
 
 import Modelo.Datos;
-import Modelo.Punto;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Ventana extends JFrame{
 

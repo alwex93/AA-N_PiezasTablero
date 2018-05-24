@@ -1,6 +1,5 @@
 package Controlador;
 
-import Modelo.Datos;
 import Modelo.ModelInterface;
 
 public class ColocaN2 implements ControlerInterface{
@@ -9,7 +8,6 @@ public class ColocaN2 implements ControlerInterface{
 
     public ColocaN2(ModelInterface modelo){
         this.modelo = modelo;
-        modelo.printInfoPuntos();
     }
 
     @Override

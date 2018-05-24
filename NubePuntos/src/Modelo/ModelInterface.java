@@ -8,7 +8,13 @@ public interface ModelInterface {
     long distancia(int p1, int p2);
     int getCoordenadaX(int punto);
     void exchangeNumbers(int i, int j);
-    void printInfoPuntos();
-    ModelInterface copiaModelo(ModelInterface data);
+    //void printInfoPuntos();
     void generarPuntos(int n, int maxX, int maxY);
+
+    int getPrimerCercanoX();
+    int getPrimerCercanoY();
+    int getSegundoCercanoX();
+    int getSegundoCercanoY();
+    boolean hayCercanos();
+    int getCoordenadaY(int punto);
 }

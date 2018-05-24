@@ -1,6 +1,5 @@
 package Controlador;
 
-import Modelo.Datos;
 import Modelo.ModelInterface;
 
 public class ColocaN implements ControlerInterface{
@@ -8,8 +7,7 @@ public class ColocaN implements ControlerInterface{
     private ModelInterface modelo;
 
     public ColocaN(ModelInterface modelo){
-        this.modelo = modelo.copiaModelo(modelo);
-        modelo.printInfoPuntos();
+        this.modelo = modelo;
     }
 
     public void distanciaMinima(){

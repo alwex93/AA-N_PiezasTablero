@@ -1,22 +1,20 @@
 package Vista;
 
-import Modelo.Datos;
+import Modelo.ModelInterface;
 
 import javax.swing.*;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class PanelPintado extends JPanel{
 
     private int origX;
     private int origY;
-    private Datos modelo;
+    private ModelInterface modelo;
 
     private final int RADIO = 5;
     public static final int PX = 621, PY = 384;
 
-    public PanelPintado(Datos modelo, int origX, int origY, int width, int height){
+    public PanelPintado(ModelInterface modelo, int origX, int origY, int width, int height){
         setBounds(origX, origY, width, height);
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));

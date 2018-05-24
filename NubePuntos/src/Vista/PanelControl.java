@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PanelControl extends JPanel{
-    private JButton sol1, sol2, nuevosPuntos;
+    private JButton sol1, sol2;
     private JTextField puntos;
     private ModelInterface modelo;
     private ControlerInterface controlerOpt;
@@ -29,7 +29,7 @@ public class PanelControl extends JPanel{
         setBackground(Color.CYAN);
         setVisible(true);
         init();
-        this.modelo = modelo.copiaModelo(modelo);
+        this.modelo = modelo;
         paintPanel = drawPanel;
     }
 
@@ -39,7 +39,6 @@ public class PanelControl extends JPanel{
 
         sol1 = new JButton("SOL1");
         sol2 = new JButton("SOL2");
-        nuevosPuntos = new JButton("Nuevos Puntos");
         puntos = new JTextField("10");
         labelTiempo = new JLabel("Tiempo de ejecución:");
         tiempoEjecucion = new JLabel(" ");
@@ -51,13 +50,12 @@ public class PanelControl extends JPanel{
         initButtonX += BUTTON_WIDTH + BUTTON_SEP;
         puntos.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH, BUTTON_HEIGHT);
         initButtonX += BUTTON_WIDTH + BUTTON_SEP;
-        nuevosPuntos.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH + 40, BUTTON_HEIGHT);
-        initButtonX += BUTTON_WIDTH + BUTTON_SEP + 40;
         labelTiempo.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH + 55, BUTTON_HEIGHT);
         initButtonX += BUTTON_WIDTH + BUTTON_SEP + 38;
         tiempoEjecucion.setBounds(initButtonX,BUTTON_SEP,BUTTON_WIDTH, BUTTON_HEIGHT);
 
         sol1.addActionListener(e -> {
+            modelo.generarPuntos(Integer.parseInt(puntos.getText()), paintPanel.PX, paintPanel.PY);
             controlerOpt = new ColocaN(modelo);
             reloj = new Reloj();
             reloj.Contar();
@@ -68,6 +66,7 @@ public class PanelControl extends JPanel{
         });
 
         sol2.addActionListener(e -> {
+            modelo.generarPuntos(Integer.parseInt(puntos.getText()), paintPanel.PX, paintPanel.PY);
             controlerOpt = new ColocaN2(modelo);
             reloj = new Reloj();
             reloj.Contar();
@@ -77,20 +76,9 @@ public class PanelControl extends JPanel{
             tiempoEjecucion.setText(reloj.getTiempo());
         });
 
-        nuevosPuntos.addActionListener(e -> {
-            try{
-                modelo.generarPuntos(Integer.parseInt(puntos.getText()), paintPanel.PX, paintPanel.PY);
-                paintPanel.repaint();
-            } catch(NumberFormatException er){
-                tiempoEjecucion.setText("Invalid Input");
-            }
-
-        });
-
         add(sol1);
         add(sol2);
         add(puntos);
-        add(nuevosPuntos);
         add(labelTiempo);
         add(tiempoEjecucion);
     }
