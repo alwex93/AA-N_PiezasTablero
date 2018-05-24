@@ -14,40 +14,19 @@ public class Controler implements InterfazControler{
 
     private InterfazModelo modelo;
     private HeapNodos lista;
-    private int escala;
+    private int escala, lngFicheroComprimido;
 
     public Controler(InterfazModelo modelo){
         this.modelo = modelo;
     }
 
-    private double fileLenght(){
-        double lenght = modelo.getFileLenght();
+    private double fileLenght(double lenght){
         escala = 0;
         while(lenght > 1024){
             lenght /= 1024;
             escala++;
         }
         return lenght;
-    }
-
-    public String getFileLenght(){
-        BigDecimal tm = new BigDecimal(fileLenght());
-        StringBuilder lenght = new StringBuilder().append(tm.setScale(2, RoundingMode.HALF_UP));
-        switch (escala){
-            case 0:
-                lenght.append(" B");
-                break;
-            case 1:
-                lenght.append(" KB");
-                break;
-            case 2:
-                lenght.append(" MB");
-                break;
-            case 3:
-                lenght.append(" GB");
-                break;
-        }
-        return lenght.toString();
     }
 
     public byte[] readFile(File fichero){
@@ -92,6 +71,36 @@ public class Controler implements InterfazControler{
         recorrerLista(lista.getNodo(),"");
     }
 
+    @Override
+    public String getFileLenghtAntes() {
+        return getFileLenght(modelo.getFileLenght());
+    }
+
+    @Override
+    public String getFileLenghtDespues() {
+        return getFileLenght(lngFicheroComprimido);
+    }
+
+    private String getFileLenght(double lenghtFile){
+        BigDecimal tm = new BigDecimal(fileLenght(lenghtFile));
+        StringBuilder lenght = new StringBuilder().append(tm.setScale(2, RoundingMode.HALF_UP));
+        switch (escala){
+            case 0:
+                lenght.append(" B");
+                break;
+            case 1:
+                lenght.append(" KB");
+                break;
+            case 2:
+                lenght.append(" MB");
+                break;
+            case 3:
+                lenght.append(" GB");
+                break;
+        }
+        return lenght.toString();
+    }
+
     public void recorrerLista(Nodo nodo, String value){
         if(!nodo.isInterno()){
             modelo.setHaffmanValue(nodo.getId(), value);
@@ -124,6 +133,7 @@ public class Controler implements InterfazControler{
         }
         System.out.println(bruto.length());
         byte[] compilado = new BigInteger(bruto.toString(), 2).toByteArray();
+        lngFicheroComprimido = compilado.length;
         return ((double)compilado.length/contenido.length)*100;
     }
 }

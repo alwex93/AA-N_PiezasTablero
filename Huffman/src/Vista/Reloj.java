@@ -1,48 +1,46 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package Vista;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
  * @author alejandro
  */
 public class Reloj {
-    private int segundos = 0, minutos = 0, horas = 0;
-    private Timer timer = new Timer();
+    private long nano;
 
-    class Contador extends TimerTask {
-
-        @Override
-        public void run() {
-            segundos++;
-
-            System.out.println("segundo: " + segundos);
-        }
-    }
+    private final int HORAS = 12960000;
+    private final int MINUTOS = 216000;
+    private final int SEGUNDOS = 3600;
+    private final int MILISEGUNDOS = 60;
 
     public void Contar() {
-        this.segundos = 0;
-        timer = new Timer();
-        timer.schedule(new Contador(), 0, 1000);
+        nano = System.nanoTime();
     }
 
     //Detiene el contador
     public void Detener() {
-        timer.cancel();
+        nano = new BigDecimal((System.nanoTime() - nano) /1000).setScale(4, RoundingMode.HALF_UP).longValue();
     }
 
     //Metodo que retorna los segundos transcurridos
     public String getTiempo() {
+        return conversor(HORAS) + ":" + conversor(MINUTOS) + ":" + conversor(SEGUNDOS) + "." + conversor(MILISEGUNDOS) + "." + nano;
+    }
 
-        while (segundos >= 60){
-            minutos++;
-            segundos -= 60;
+    private int conversor(int conv){
+        int superior = 0;
+        while (nano >= conv){
+            superior++;
+            nano -= conv;
         }
-        while (minutos >= 60){
-            horas++;
-            minutos -= 60;
-        }
-        return horas + ":" + minutos + ":" + segundos;
+        return superior;
     }
 }

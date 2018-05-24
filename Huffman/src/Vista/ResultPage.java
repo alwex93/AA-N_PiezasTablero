@@ -8,16 +8,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.Calendar;
 
 public class ResultPage extends JFrame{
     private JLabel tiempoEjecucion;
     private JLabel proporcion;
     private JTable dataTable;
     private JPanel panel;
+    private JLabel lngAntes;
+    private JLabel lngDespues;
     private InterfazModelo modelo;
     private InterfazControler controler;
-    Calendar tarda = Calendar.getInstance();
 
     public ResultPage(InterfazModelo modelo, File fichero){
         super("Resultado Compresión");
@@ -28,18 +28,18 @@ public class ResultPage extends JFrame{
 
     private void init(File fichero){
         Reloj reloj = new Reloj();
-        setSize(640,480);
-        long initTime;
+        setSize(480,218);
         if(modelo != null){
-            initTime = System.currentTimeMillis();
             reloj.Contar();
             proporcion.setText(redondear((long)controler.comprimirFichero(fichero)) + "%");
+            lngAntes.setText(controler.getFileLenghtAntes());
+            lngDespues.setText(controler.getFileLenghtDespues());
             reloj.Detener();
             chargeTableData();
-            tiempoEjecucion.setText(reloj.getTiempo() + "." + redondear(System.currentTimeMillis() - initTime).replace(".", ""));
+            tiempoEjecucion.setText(reloj.getTiempo());
         }
         add(panel);
-        pack();
+        //pack();
         setLocationRelativeTo(null);
     }
 

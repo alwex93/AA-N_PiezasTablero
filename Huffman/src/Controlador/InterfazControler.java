@@ -7,5 +7,6 @@ public interface InterfazControler {
     double comprimirFichero(File fichero);
     void generarArbolHuffman();
     void setHaffmanValues();
-    String getFileLenght();
+    String getFileLenghtAntes();
+    String getFileLenghtDespues();
 }
