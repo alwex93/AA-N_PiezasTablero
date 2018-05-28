@@ -104,7 +104,6 @@ public class Controler implements InterfazControler{
         while (bruto.length() % 8 != 0){
             bruto.append("0");
         }
-        System.out.println(bruto.length());
         compilado = new BigInteger(bruto.toString(), 2).toByteArray();
         return ((double)compilado.length/contenido.length)*100;
     }
