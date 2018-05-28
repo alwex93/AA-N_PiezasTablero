@@ -12,7 +12,7 @@ public interface InterfazModelo {
     byte getValue(int pos);
     int sizeTable();
     void addSimbolo(int simbolo);
-    void showFrecuencias();
+    //void showFrecuencias();
     void setHaffmanValue(byte simbol, String value);
     String getHaffmanValue(byte simbolo);
 

@@ -6,6 +6,7 @@ import Modelo.InterfazModelo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -16,6 +17,7 @@ public class ResultPage extends JFrame{
     private JPanel panel;
     private JLabel lngAntes;
     private JLabel lngDespues;
+    private JButton generarFicheroButton;
     private InterfazModelo modelo;
     private InterfazControler controler;
 
@@ -30,6 +32,13 @@ public class ResultPage extends JFrame{
         Reloj reloj = new Reloj();
         setSize(480,218);
         if(modelo != null){
+            generarFicheroButton.addActionListener(e -> {
+                if(controler.generarFichero()){
+                    generarFicheroButton.setBackground(Color.GREEN);
+                } else {
+                    generarFicheroButton.setBackground(Color.RED);
+                }
+            });
             reloj.Contar();
             proporcion.setText(redondear((long)controler.comprimirFichero(fichero)) + "%");
             lngAntes.setText(controler.getFileLenghtAntes());
@@ -59,47 +68,6 @@ public class ResultPage extends JFrame{
                 return getValueAt(0, columnIndex).getClass();
             }
         };
-
-        /*TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-        sorter.setComparator(0, new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                String st1 = (String)o1;
-                String st2 = (String)o2;
-                byte b1 = Byte.parseByte(st1.substring(0, st1.indexOf("(") - 1));
-                byte b2 = Byte.parseByte(st2.substring(0, st2.indexOf("(") - 1));
-                return Byte.compare(b1, b2);
-            }
-            @Override
-            public boolean equals(Object o2) {
-                return this.equals(o2);
-            }
-        });
-        sorter.setComparator(1, new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                Integer int1 = (Integer)o1;
-                Integer int2 = (Integer)o2;
-                return int1.compareTo(int2);
-            }
-            @Override
-            public boolean equals(Object o2) {
-                return this.equals(o2);
-            }
-        });
-        sorter.setComparator(2, new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                String st1 = (String)o1;
-                String st2 = (String)o2;
-                return Integer.compare(st1.length(), st2.length());
-            }
-            @Override
-            public boolean equals(Object o2) {
-                return this.equals(o2);
-            }
-        });
-        dataTable.setRowSorter(sorter);*/
         dataTable.setAutoCreateRowSorter(true);
         dataTable.setModel(model);
     }

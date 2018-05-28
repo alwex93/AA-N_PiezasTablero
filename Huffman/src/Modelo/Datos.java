@@ -1,10 +1,7 @@
 package Modelo;
 
-import Controlador.HeapNodos.HeapNodos;
-
 public class Datos implements InterfazModelo{
     private TablaFrecuencias tablaSimbolos;
-    private HeapNodos heapNodos;
     long fileLenght;
 
     private final int CHAR_POS = 0, FRECUENCY_POS = 1, HAFFMANCODE_POS = 2;
@@ -46,11 +43,6 @@ public class Datos implements InterfazModelo{
     @Override
     public void addSimbolo(int simbolo) {
         tablaSimbolos.addSimbolo(new Simbolo(simbolo));
-    }
-
-    @Override
-    public void showFrecuencias() {
-        tablaSimbolos.showFrecuencias();
     }
 
     @Override

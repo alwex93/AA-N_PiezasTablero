@@ -14,7 +14,9 @@ public class Controler implements InterfazControler{
 
     private InterfazModelo modelo;
     private HeapNodos lista;
-    private int escala, lngFicheroComprimido;
+    private int escala;
+    private byte[] compilado;
+    private String namePath;
 
     public Controler(InterfazModelo modelo){
         this.modelo = modelo;
@@ -29,48 +31,6 @@ public class Controler implements InterfazControler{
         return lenght;
     }
 
-    public byte[] readFile(File fichero){
-        FileReader reader;
-        byte[] bytes;
-        try{
-            reader = new FileReader(fichero);
-            bytes = IOUtils.toByteArray(reader, "UTF8");
-            modelo.setFileLenght(fichero.length());
-            for (byte b : bytes) {
-                modelo.addSimbolo(b);
-            }
-            reader.close();
-            modelo.showFrecuencias();
-            return bytes;
-        }catch (IOException e){
-            System.out.println("error");
-        }
-        return null;
-    }
-
-    public void generarArbolHuffman(){
-        int sizeTable = modelo.sizeTable();
-        //generamos la lista ordenada de menor a mayor
-        lista = new HeapNodos(sizeTable);
-        for (int it = 0; it < sizeTable; it++){
-            lista.addNodo(new Nodo(modelo.getValue(it), modelo.getFrecuencia(it)));
-        }
-        do{
-            Nodo[] primeros = lista.getPrimeros();
-            if (primeros[0] != null && primeros[1] != null){
-                Nodo nuevo = new Nodo(primeros[0].getCompareValue() + primeros[1].getCompareValue());
-                nuevo.setCero(primeros[0]);
-                nuevo.setUno(primeros[1]);
-                lista.addNodo(nuevo);
-            }
-        } while(lista.quedanNodos());
-
-    }
-
-    public void setHaffmanValues(){
-        recorrerLista(lista.getNodo(),"");
-    }
-
     @Override
     public String getFileLenghtAntes() {
         return getFileLenght(modelo.getFileLenght());
@@ -78,7 +38,26 @@ public class Controler implements InterfazControler{
 
     @Override
     public String getFileLenghtDespues() {
-        return getFileLenght(lngFicheroComprimido);
+        return getFileLenght(compilado.length);
+    }
+
+    @Override
+    public boolean generarFichero() {
+        FileOutputStream out = null;
+        String path = namePath + ".comp";
+        File check = new File (path);
+        if (check.exists()){
+            return true;
+        }
+        try {
+            out = new FileOutputStream(path);
+            out.write(compilado);
+            out.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private String getFileLenght(double lenghtFile){
@@ -101,7 +80,7 @@ public class Controler implements InterfazControler{
         return lenght.toString();
     }
 
-    public void recorrerLista(Nodo nodo, String value){
+    private void recorrerLista(Nodo nodo, String value){
         if(!nodo.isInterno()){
             modelo.setHaffmanValue(nodo.getId(), value);
         } else {
@@ -112,12 +91,6 @@ public class Controler implements InterfazControler{
                 recorrerLista(nodo.getUno(), value + "1");
             }
         }
-    }
-
-    public void showData(){
-        do{
-            System.out.println(lista.getNodo().toString());
-        }while (!lista.isEmpty());
     }
 
     public double comprimirFichero(File fichero){
@@ -132,8 +105,48 @@ public class Controler implements InterfazControler{
             bruto.append("0");
         }
         System.out.println(bruto.length());
-        byte[] compilado = new BigInteger(bruto.toString(), 2).toByteArray();
-        lngFicheroComprimido = compilado.length;
+        compilado = new BigInteger(bruto.toString(), 2).toByteArray();
         return ((double)compilado.length/contenido.length)*100;
+    }
+
+    private byte[] readFile(File fichero){
+        FileReader reader;
+        byte[] bytes;
+        try{
+            namePath = fichero.getAbsolutePath();
+            reader = new FileReader(fichero);
+            bytes = IOUtils.toByteArray(reader, "UTF8");
+            modelo.setFileLenght(fichero.length());
+            for (byte b : bytes) {
+                modelo.addSimbolo(b);
+            }
+            reader.close();
+            return bytes;
+        }catch (IOException e){
+            System.out.println("error");
+        }
+        return null;
+    }
+
+    private void generarArbolHuffman(){
+        int sizeTable = modelo.sizeTable();
+        //generamos la lista ordenada de menor a mayor
+        lista = new HeapNodos(sizeTable);
+        for (int it = 0; it < sizeTable; it++){
+            lista.addNodo(new Nodo(modelo.getValue(it), modelo.getFrecuencia(it)));
+        }
+        do{
+            Nodo[] primeros = lista.getPrimeros();
+            if (primeros[0] != null && primeros[1] != null){
+                Nodo nuevo = new Nodo(primeros[0].getCompareValue() + primeros[1].getCompareValue());
+                nuevo.setCero(primeros[0]);
+                nuevo.setUno(primeros[1]);
+                lista.addNodo(nuevo);
+            }
+        } while(lista.quedanNodos());
+    }
+
+    private void setHaffmanValues(){
+        recorrerLista(lista.getNodo(),"");
     }
 }
