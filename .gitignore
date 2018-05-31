@@ -1,2 +1,7 @@
+.gitignore
 */out/*
 */.idea/*
+*.rar
+*.comp
+Huffman/texto.txt
+/ColocarPiezasTest.java
