@@ -24,6 +24,7 @@ public class VentanaPrincipal extends JFrame{
     private JPanel mainPanel;
     private ControlerInterface controlador;
     private Template temp;
+    private VentanaSustitucion avanzadas;
 
     private final String PATH_TEMPLATES = "C:\\Users\\admin\\Desktop\\Nueva carpeta\\AlgoritmosAvanzados\\CorrectorOrtografico\\recursos";
     private final String TEMPLATE = "template.ftl";
@@ -54,7 +55,10 @@ public class VentanaPrincipal extends JFrame{
         marcarButton.addActionListener(e -> alterarTexto(MARCAR));
         sustituirButton.addActionListener(e -> alterarTexto(SUSTITUIR));
         personalizadaButton.addActionListener(e -> {
-
+            avanzadas = VentanaSustitucion.getWindow(getTexto(), getTest(getTexto()));
+            if (avanzadas != null && !avanzadas.isVisible()){
+                avanzadas = new VentanaSustitucion(getTexto(), getTest(getTexto()));
+            }
         });
         add(mainPanel);
         setLocationRelativeTo(null);
@@ -95,7 +99,7 @@ public class VentanaPrincipal extends JFrame{
         if (texto != null){//Marcado
             return "<b color='red'><s>" + texto.substring(pal.getInitPos(), pal.getEndPos()) + "<s></b>";
         } else {//Sustituir
-            return "<b color='blue'>" + pal.getSustituto() + "</b>";
+            return "<b color='blue'>" + pal.getFirstSustituto() + "</b>";
         }
     }
 
@@ -113,7 +117,7 @@ public class VentanaPrincipal extends JFrame{
         for (int n = 0, p = 0, punt = 0, init; n < palabras.length; n++){
             if (n%2 != 1){
                 init = texto.indexOf(palabras[n], punt);
-                ret[p] = new Palabra(init, init + palabras[n].length(), palabras[n]);
+                ret[p] = new Palabra(palabras[n], init, init + palabras[n].length(), new String[]{palabras[n] + "1"});
                 punt = ret[p].getEndPos();
                 p++;
             }
