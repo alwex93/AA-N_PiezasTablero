@@ -43,7 +43,7 @@ public class Controler implements InterfazControler{
 
     @Override
     public boolean generarFichero() {
-        FileOutputStream out = null;
+        FileOutputStream out;
         String path = namePath + ".comp";
         File check = new File (path);
         if (check.exists()){
@@ -93,11 +93,12 @@ public class Controler implements InterfazControler{
         }
     }
 
-    public double comprimirFichero(File fichero){
+    public void comprimirFichero(File fichero){
         byte[] contenido = readFile(fichero);
         generarArbolHuffman();
         setHaffmanValues();
         StringBuilder bruto = new StringBuilder();
+        assert contenido != null;
         for (byte b: contenido) {
             bruto.append(modelo.getHaffmanValue(b));
         }
@@ -105,7 +106,6 @@ public class Controler implements InterfazControler{
             bruto.append("0");
         }
         compilado = new BigInteger(bruto.toString(), 2).toByteArray();
-        return ((double)compilado.length/contenido.length)*100;
     }
 
     private byte[] readFile(File fichero){
@@ -115,10 +115,10 @@ public class Controler implements InterfazControler{
             namePath = fichero.getAbsolutePath();
             reader = new FileReader(fichero);
             bytes = IOUtils.toByteArray(reader, "UTF8");
-            modelo.setFileLenght(fichero.length());
             for (byte b : bytes) {
                 modelo.addSimbolo(b);
             }
+            modelo.setFileLenght(fichero.length());
             reader.close();
             return bytes;
         }catch (IOException e){

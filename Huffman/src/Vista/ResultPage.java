@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 
 public class ResultPage extends JFrame{
     private JLabel tiempoEjecucion;
-    private JLabel proporcion;
     private JTable dataTable;
     private JPanel panel;
     private JLabel lngAntes;
@@ -40,20 +39,15 @@ public class ResultPage extends JFrame{
                 }
             });
             reloj.Contar();
-            proporcion.setText(redondear((long)controler.comprimirFichero(fichero)) + "%");
+            controler.comprimirFichero(fichero);
+            reloj.Detener();
             lngAntes.setText(controler.getFileLenghtAntes());
             lngDespues.setText(controler.getFileLenghtDespues());
-            reloj.Detener();
             chargeTableData();
             tiempoEjecucion.setText(reloj.getTiempo());
         }
         add(panel);
-        //pack();
         setLocationRelativeTo(null);
-    }
-
-    private String redondear(long number){
-        return new BigDecimal(number).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
     }
 
     private void chargeTableData(){
