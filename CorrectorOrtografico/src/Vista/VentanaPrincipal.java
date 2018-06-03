@@ -26,7 +26,7 @@ public class VentanaPrincipal extends JFrame{
     private Template temp;
     private VentanaSustitucion avanzadas;
 
-    private final String PATH_TEMPLATES = "C:\\Users\\admin\\Desktop\\Nueva carpeta\\AlgoritmosAvanzados\\CorrectorOrtografico\\recursos";
+    private final String PATH_TEMPLATES = "recursos";
     private final String TEMPLATE = "template.ftl";
 
     private final boolean SUSTITUIR = true;
@@ -55,9 +55,9 @@ public class VentanaPrincipal extends JFrame{
         marcarButton.addActionListener(e -> alterarTexto(MARCAR));
         sustituirButton.addActionListener(e -> alterarTexto(SUSTITUIR));
         personalizadaButton.addActionListener(e -> {
-            avanzadas = VentanaSustitucion.getWindow(getTexto(), getTest(getTexto()));
+            avanzadas = VentanaSustitucion.getWindow(this, getTexto(), getTest(getTexto()));
             if (avanzadas != null && !avanzadas.isVisible()){
-                avanzadas = new VentanaSustitucion(getTexto(), getTest(getTexto()));
+                avanzadas = new VentanaSustitucion(this,getTexto(), getTest(getTexto()));
             }
         });
         add(mainPanel);
@@ -83,7 +83,7 @@ public class VentanaPrincipal extends JFrame{
         String texto = getTexto();
         int punteroTexto = 0;
         for(Palabra pal : getTest(texto)){
-            textoMarcado.append(texto.substring(punteroTexto, pal.getInitPos()));
+            textoMarcado.append(texto, punteroTexto, pal.getInitPos());
             if (sustMarc){
                 textoMarcado.append(alterarPalabra(pal, null));
             } else {
@@ -142,4 +142,9 @@ public class VentanaPrincipal extends JFrame{
             return "Error." + e.getMessage();
         }
     }
+
+    public void setText(String text){
+        texto.setText(text);
+    }
+
 }
