@@ -1,9 +1,12 @@
+import Controlador.Controler;
 import Vista.VentanaPrincipal;
 
 public class main {
 
     public static void main (String[] args){
-        new VentanaPrincipal();
+        Controler cnt = new Controler();
+        cnt.testDistancia("hola", "hol");
+        //new VentanaPrincipal();
     }
 
 }

@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -22,6 +24,7 @@ public class VentanaPrincipal extends JFrame{
     private JButton personalizadaButton;
     private JEditorPane texto;
     private JPanel mainPanel;
+    private JLabel test;
     private ControlerInterface controlador;
     private Template temp;
     private VentanaSustitucion avanzadas;
@@ -52,8 +55,23 @@ public class VentanaPrincipal extends JFrame{
             }
         });
         setTemplateConfigure();
-        marcarButton.addActionListener(e -> alterarTexto(MARCAR));
-        sustituirButton.addActionListener(e -> alterarTexto(SUSTITUIR));
+        marcarButton.addActionListener(e -> {
+            alterarTexto(MARCAR);
+            int dot = texto.getCaret().getDot();
+            String docText = null;
+            try {
+                docText = texto.getDocument().getText(0, texto.getDocument().getLength());
+                String nextCharacter = docText.substring(dot);
+                test.setText(nextCharacter);
+            } catch (BadLocationException e1) {
+                e1.printStackTrace();
+            }
+        });
+        sustituirButton.addActionListener(e -> {
+            alterarTexto(SUSTITUIR);
+            Point p = texto.getCaret().getMagicCaretPosition();
+            if (p!= null) test.setText("x: " + p.x + " y: " + p.y);
+        });
         personalizadaButton.addActionListener(e -> {
             avanzadas = VentanaSustitucion.getWindow(this, getTexto(), getTest(getTexto()));
             if (avanzadas != null && !avanzadas.isVisible()){
