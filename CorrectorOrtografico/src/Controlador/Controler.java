@@ -2,14 +2,57 @@ package Controlador;
 
 import Vista.Palabra;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class Controler implements ControlerInterface{
 
     private int[][] dist;
+    private String[] diccionario;
+
+    private final int MAXSUSTITUTOS = 10;
+
+    public Controler(){
+        File file = new File("recursos/ES.dic");
+        ArrayList<String> dicContainer = new ArrayList<>();
+        try {
+            BufferedReader bf = new BufferedReader(new FileReader(file));
+            while (bf.ready()){
+                dicContainer.add(bf.readLine());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        diccionario = new String[dicContainer.size()];
+        diccionario = dicContainer.toArray(diccionario);
+    }
 
     @Override
     public Palabra[] comprobar(String texto) {
         String[] palabras = texto.replaceAll(",|.", "").split(" ");
         return new Palabra[0];
+    }
+
+    private Palabra[] getPalabras(String texto){
+        ArrayList<Palabra> palabras = new ArrayList<>();
+        for(int letra = 0; letra < texto.length(); letra++){
+            int initPal = letra;
+            do {
+                letra++;
+            } while (texto.charAt(letra) != ' ');
+            int endPal = letra - 1;
+            String palabra = texto.substring(initPal, endPal);
+            palabras.add(new Palabra(palabra, initPal, endPal, getSustitutos(palabra)));
+        }
+        Palabra[] ret = new Palabra[palabras.size()];
+        return palabras.toArray(ret);
+    }
+
+    private String[] getSustitutos(String palabra){
+        String[] sustitutos = new String[MAXSUSTITUTOS];
+        for(int sust = 0; sust < MAXSUSTITUTOS; sust++){
+            
+        }
     }
 
     private int distancia(char[] pal1, char[] pal2){
