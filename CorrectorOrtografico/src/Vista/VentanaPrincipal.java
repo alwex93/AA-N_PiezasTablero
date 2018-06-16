@@ -1,5 +1,6 @@
 package Vista;
 
+import Controlador.Controler;
 import Controlador.ControlerInterface;
 
 import freemarker.template.Configuration;
@@ -25,7 +26,7 @@ public class VentanaPrincipal extends JFrame{
     private JEditorPane texto;
     private JPanel mainPanel;
     private JLabel test;
-    private ControlerInterface controlador;
+    private ControlerInterface controler;
     private Template temp;
     private VentanaSustitucion avanzadas;
 
@@ -37,11 +38,7 @@ public class VentanaPrincipal extends JFrame{
 
     public VentanaPrincipal() {
         init();
-    }
-
-    public VentanaPrincipal(ControlerInterface control) {
-        init();
-        controlador = control;
+        controler = new Controler();
     }
 
     private void init(){
@@ -58,7 +55,7 @@ public class VentanaPrincipal extends JFrame{
         marcarButton.addActionListener(e -> {
             alterarTexto(MARCAR);
             int dot = texto.getCaret().getDot();
-            String docText = null;
+            String docText;
             try {
                 docText = texto.getDocument().getText(0, texto.getDocument().getLength());
                 String nextCharacter = docText.substring(dot);
@@ -73,9 +70,9 @@ public class VentanaPrincipal extends JFrame{
             if (p!= null) test.setText("x: " + p.x + " y: " + p.y);
         });
         personalizadaButton.addActionListener(e -> {
-            avanzadas = VentanaSustitucion.getWindow(this, getTexto(), getTest(getTexto()));
+            avanzadas = VentanaSustitucion.getWindow(this, getTexto(), controler.comprobar(getTexto()));
             if (avanzadas != null && !avanzadas.isVisible()){
-                avanzadas = new VentanaSustitucion(this,getTexto(), getTest(getTexto()));
+                avanzadas = new VentanaSustitucion(this,getTexto(), controler.comprobar(getTexto()));
             }
         });
         add(mainPanel);
@@ -100,7 +97,7 @@ public class VentanaPrincipal extends JFrame{
         StringBuilder textoMarcado = new StringBuilder();
         String texto = getTexto();
         int punteroTexto = 0;
-        for(Palabra pal : getTest(texto)){
+        for(Palabra pal : controler.comprobar(texto)){
             textoMarcado.append(texto, punteroTexto, pal.getInitPos());
             if (sustMarc){
                 textoMarcado.append(alterarPalabra(pal, null));
@@ -129,7 +126,7 @@ public class VentanaPrincipal extends JFrame{
         return seccion.text();
     }
 
-    private Palabra[] getTest(String texto){
+    /*private Palabra[] getTest(String texto){
         String[] palabras = texto.split(" ");
         Palabra[] ret = new Palabra[palabras.length/2 + palabras.length%2];
         for (int n = 0, p = 0, punt = 0, init; n < palabras.length; n++){
@@ -141,10 +138,10 @@ public class VentanaPrincipal extends JFrame{
             }
         }
         return ret;
-    }
+    }*/
 
     private Palabra[] getPalabras(String texto){
-        return controlador.comprobar(texto);
+        return controler.comprobar(texto);
     }
 
     private String getTemplate(String texto){

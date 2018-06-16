@@ -14,7 +14,7 @@ public class Palabra {
         initPos = init;
         endPos = end;
         this.sustitutos = sustitutos;
-        corregida = false;
+        corregida = sustitutos == null;
     }
 
     public int getInitPos() {
