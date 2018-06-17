@@ -11,7 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -29,6 +28,7 @@ public class VentanaPrincipal extends JFrame{
     private ControlerInterface controler;
     private Template temp;
     private VentanaSustitucion avanzadas;
+    private Palabra[] erroneas;
 
     private final String PATH_TEMPLATES = "recursos";
     private final String TEMPLATE = "template.ftl";
@@ -53,26 +53,22 @@ public class VentanaPrincipal extends JFrame{
         });
         setTemplateConfigure();
         marcarButton.addActionListener(e -> {
+            erroneas = controler.comprobar(getTexto());
             alterarTexto(MARCAR);
-            int dot = texto.getCaret().getDot();
-            String docText;
-            try {
-                docText = texto.getDocument().getText(0, texto.getDocument().getLength());
-                String nextCharacter = docText.substring(dot);
-                test.setText(nextCharacter);
-            } catch (BadLocationException e1) {
-                e1.printStackTrace();
-            }
         });
         sustituirButton.addActionListener(e -> {
+            if (erroneas == null){
+                erroneas = controler.comprobar(getTexto());
+            }
             alterarTexto(SUSTITUIR);
-            Point p = texto.getCaret().getMagicCaretPosition();
-            if (p!= null) test.setText("x: " + p.x + " y: " + p.y);
         });
         personalizadaButton.addActionListener(e -> {
-            avanzadas = VentanaSustitucion.getWindow(this, getTexto(), controler.comprobar(getTexto()));
+            if (erroneas == null){
+                erroneas = controler.comprobar(getTexto());
+            }
+            avanzadas = VentanaSustitucion.getWindow(this, getTexto(), erroneas);
             if (avanzadas != null && !avanzadas.isVisible()){
-                avanzadas = new VentanaSustitucion(this,getTexto(), controler.comprobar(getTexto()));
+                avanzadas = new VentanaSustitucion(this,getTexto(), erroneas);
             }
         });
         add(mainPanel);
@@ -97,7 +93,7 @@ public class VentanaPrincipal extends JFrame{
         StringBuilder textoMarcado = new StringBuilder();
         String texto = getTexto();
         int punteroTexto = 0;
-        for(Palabra pal : controler.comprobar(texto)){
+        for(Palabra pal : erroneas){
             textoMarcado.append(texto, punteroTexto, pal.getInitPos());
             if (sustMarc){
                 textoMarcado.append(alterarPalabra(pal, null));

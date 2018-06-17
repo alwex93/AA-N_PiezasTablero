@@ -44,6 +44,7 @@ public class VentanaSustitucion extends JDialog{
         ventana = this;
         cambiarButton.addActionListener(e -> {
             hacerCorreccion(this.palabras);
+            parent.setText(textoFinal);
         });
 
         WindowListener exitListener = new WindowAdapter() {

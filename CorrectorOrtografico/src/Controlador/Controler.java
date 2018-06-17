@@ -8,6 +8,8 @@ public class Controler implements ControlerInterface{
     private int[][] dist;
     private Diccionario diccionario;
 
+    private final char[] EX_CARACTER = {'.', ',', '!', '?'};
+
 
     public Controler(){
         diccionario = new Diccionario();
@@ -27,13 +29,25 @@ public class Controler implements ControlerInterface{
             do {
                 letra++;
             } while (letra < texto.length() && texto.charAt(letra) != ' ');
-            String palabra = texto.substring(initPal, letra);
-            pal = new Palabra(palabra, initPal, letra, diccionario.getSustitutos(palabra));
+            int endPal = getPalabra(texto, letra);
+            String palabra = texto.substring(initPal, endPal);
+            pal = new Palabra(palabra, initPal, endPal, diccionario.getSustitutos(palabra));
             if (!pal.isCorregida()){
                 palabras.add(pal);
             }
         }
         Palabra[] ret = new Palabra[palabras.size()];
         return palabras.toArray(ret);
+    }
+
+    private int getPalabra(String texto, int endPal){
+        int end = endPal - 1;
+        char lastLeter = texto.charAt(end);
+        for (char ex: EX_CARACTER) {
+            if (lastLeter == ex){
+                return endPal - 1;
+            }
+        }
+        return endPal;
     }
 }

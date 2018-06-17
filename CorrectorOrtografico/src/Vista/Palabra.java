@@ -46,6 +46,10 @@ public class Palabra {
         endPos += diferencia;
     }
 
+    public void quitarSignoPuntuacion(){
+        endPos--;
+    }
+
     public String getFirstSustituto(){
         return sustitutos != null ? sustitutos[0] : "";
     }

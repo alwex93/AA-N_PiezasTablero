@@ -1,12 +1,8 @@
 package Controlador;
 
-import com.sun.deploy.util.ArrayUtil;
 import org.apache.commons.lang.ArrayUtils;
-import sun.text.normalizer.UTF16;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class Diccionario {
 
@@ -20,15 +16,12 @@ public class Diccionario {
         ArrayList<String> dicContainer = new ArrayList<>();
         try {
             BufferedReader bf = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(file), "UTF-8"));
+                    new FileInputStream(file), "ISO-8859-1"));
             while (bf.ready()){
                 dicContainer.add(bf.readLine());
-                if(dicContainer.size() > 87790){
-                    System.out.println(dicContainer.get(dicContainer.size() - 1));
-                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         diccionario = new String[dicContainer.size()];
         diccionario = dicContainer.toArray(diccionario);
