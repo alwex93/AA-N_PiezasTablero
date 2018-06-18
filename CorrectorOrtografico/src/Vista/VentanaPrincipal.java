@@ -110,7 +110,7 @@ public class VentanaPrincipal extends JFrame{
         if (texto != null){//Marcado
             return "<b color='red'><s>" + texto.substring(pal.getInitPos(), pal.getEndPos()) + "<s></b>";
         } else {//Sustituir
-            return "<b color='blue'>" + pal.getFirstSustituto() + "</b>";
+            return "<b color='blue'>" + pal.corregir(0) + "</b>";
         }
     }
 

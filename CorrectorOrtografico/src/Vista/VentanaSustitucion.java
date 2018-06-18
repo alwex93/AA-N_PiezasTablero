@@ -63,11 +63,13 @@ public class VentanaSustitucion extends JDialog{
             Palabra sustituir = palabras.remove(erroneas.getSelectedIndex());
             textoFinal = textoFinal.substring(0, sustituir.getInitPos()) + "<b color='green'>" + sustituto + "</b>"+
                     textoFinal.substring(sustituir.getEndPos(), textoFinal.length());
-            sustituir.corregir();
+            sustituir.corregir(opciones.getSelectedIndex());
             for(int pal = erroneas.getSelectedIndex(); pal < palabras.size(); pal++){
                 palabras.get(pal).actualizarPosicion(17 + sustituto.length() + 4 - sustituir.getPalabra().length());
             }
             setList(palabras);
+            contexto.setText("");
+            opciones.setModel(new DefaultComboBoxModel<>());
         }
     }
 

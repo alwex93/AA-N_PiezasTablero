@@ -31,7 +31,7 @@ public class Controler implements ControlerInterface{
             } while (letra < texto.length() && texto.charAt(letra) != ' ');
             int endPal = getPalabra(texto, letra);
             String palabra = texto.substring(initPal, endPal);
-            pal = new Palabra(palabra, initPal, endPal, diccionario.getSustitutos(palabra));
+            pal = new Palabra(palabra, initPal, diccionario.getSustitutos(palabra));
             if (!pal.isCorregida()){
                 palabras.add(pal);
             }

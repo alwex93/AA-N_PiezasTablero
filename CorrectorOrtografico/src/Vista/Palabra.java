@@ -4,17 +4,18 @@ import java.util.Objects;
 
 public class Palabra {
 
-    private int initPos, endPos;
+    private int initPos;
     private String[] sustitutos;
     private String palabra;
     private boolean corregida;
+    private int diferencia;
 
-    public Palabra(String palabra, int init, int end, String[] sustitutos){
+    public Palabra(String palabra, int init, String[] sustitutos){
         this.palabra = palabra;
         initPos = init;
-        endPos = end;
         this.sustitutos = sustitutos;
         corregida = sustitutos == null;
+        diferencia = 0;
     }
 
     public int getInitPos() {
@@ -22,7 +23,7 @@ public class Palabra {
     }
 
     public int getEndPos() {
-        return endPos;
+        return initPos + palabra.length() + diferencia;
     }
 
     public String[] getSustitutos() {
@@ -33,8 +34,13 @@ public class Palabra {
         return palabra;
     }
 
-    public void corregir(){
-        corregida = true;
+    public String corregir(int sustituto){
+        if (sustituto < sustitutos.length){
+            corregida = true;
+            diferencia = palabra.length() - sustitutos[sustituto].length();
+            palabra = sustitutos[sustituto];
+        }
+        return palabra;
     }
 
     public boolean isCorregida(){
@@ -43,15 +49,6 @@ public class Palabra {
 
     public void actualizarPosicion(int diferencia){
         initPos += diferencia;
-        endPos += diferencia;
-    }
-
-    public void quitarSignoPuntuacion(){
-        endPos--;
-    }
-
-    public String getFirstSustituto(){
-        return sustitutos != null ? sustitutos[0] : "";
     }
 
     @Override
@@ -65,7 +62,7 @@ public class Palabra {
     @Override
     public int hashCode() {
 
-        return Objects.hash(initPos, endPos);
+        return Objects.hash(initPos);
     }
 
     @Override
