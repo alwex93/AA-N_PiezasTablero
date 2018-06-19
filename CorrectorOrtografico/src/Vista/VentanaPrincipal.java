@@ -39,6 +39,7 @@ public class VentanaPrincipal extends JFrame{
     public VentanaPrincipal() {
         init();
         controler = new Controler();
+        new Thread(new Marcador(this)).start();
     }
 
     private void init(){
@@ -114,6 +115,15 @@ public class VentanaPrincipal extends JFrame{
         }
     }
 
+    public void checkTexto(){
+        String texto = getTexto();
+        if (texto.contains(".")){
+            erroneas = controler.comprobar(texto);
+            alterarTexto(MARCAR);
+        }
+
+    }
+
     private String getTexto(){
         Element seccion = Jsoup.parse(texto.getText()).select("p").first();
         if (seccion == null){
@@ -135,10 +145,6 @@ public class VentanaPrincipal extends JFrame{
         }
         return ret;
     }*/
-
-    private Palabra[] getPalabras(String texto){
-        return controler.comprobar(texto);
-    }
 
     private String getTemplate(String texto){
         try {
