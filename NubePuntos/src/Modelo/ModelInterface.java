@@ -8,8 +8,12 @@ public interface ModelInterface {
     long distancia(int p1, int p2);
     int getCoordenadaX(int punto);
     void exchangeNumbers(int i, int j);
-    //void printInfoPuntos();
     void generarPuntos(int n, int maxX, int maxY);
+    String getInfoCercanos();
+
+    //Funciones de test para el modelo
+    void setPuntos(Punto[] puntos);
+    void printInfoPuntos();
 
     int getPrimerCercanoX();
     int getPrimerCercanoY();

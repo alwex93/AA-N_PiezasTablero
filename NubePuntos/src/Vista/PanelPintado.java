@@ -12,7 +12,7 @@ public class PanelPintado extends JPanel{
     private ModelInterface modelo;
 
     private final int RADIO = 5;
-    public static final int PX = 621, PY = 384;
+    public static final int PX = 622, PY = 373;
 
     public PanelPintado(ModelInterface modelo, int origX, int origY, int width, int height){
         setBounds(origX, origY, width, height);

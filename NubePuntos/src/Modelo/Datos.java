@@ -91,4 +91,17 @@ public class Datos implements ModelInterface{
         }
         hayCercanos = false;
     }
+
+    public void setPuntos(Punto[] puntos){
+        this.puntos = puntos;
+    }
+
+    public String getInfoCercanos(){
+        if(hayCercanos()){
+            return "P{" + puntos[cercano1].toString() + ", "
+                    + puntos[cercano2].toString() + ", Distancia: " + distancia(cercano1, cercano2);
+        } else {
+            return "";
+        }
+    }
 }

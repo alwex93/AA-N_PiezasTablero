@@ -1,10 +1,9 @@
 package Vista;
 
 import Modelo.Datos;
-
 import javax.swing.*;
 
-public class Ventana extends JFrame{
+public class Ventana extends JFrame implements ViewInterface{
 
     private Datos modelo;
     private final int DEFAULT = 10;
@@ -19,5 +18,9 @@ public class Ventana extends JFrame{
         PanelControl p1 = new PanelControl(table, modelo, 0,0,getWidth());
         add(p1);
         add(table);
+    }
+    @Override
+    public void createWindow() {
+        setVisible(true);
     }
 }

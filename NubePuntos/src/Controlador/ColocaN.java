@@ -1,7 +1,6 @@
 package Controlador;
 
 import Modelo.ModelInterface;
-
 import java.util.ArrayList;
 
 public class ColocaN implements ControlerInterface{
@@ -14,27 +13,8 @@ public class ColocaN implements ControlerInterface{
 
     public void distanciaMinima(){
         ordenarPuntosPorX(0, modelo.getLenght() - 1); //Order by X O(log(n))
-        int[] cercanos = obtenerCercanos(0, modelo.getLenght() - 1, (modelo.getLenght() - 1)/2);
+        int[] cercanos = obtenerCercanos(0, modelo.getLenght() - 1);
         modelo.setCercanos(cercanos[0], cercanos[1]);
-    }
-
-    private int minim(int elem, int i, int j){
-        int minD, minI;
-        if( j - i > 2){
-            minI = minim(elem, i, i +(j - i)/2);
-            minD = minim(elem, i +(j - i)/2, j);
-            return getMinimo(elem, minI, minD);
-        } else {
-            return getMinimo(elem, i, j);
-        }
-    }
-
-    private int getMinimo(int elem, int indx1, int indx2){
-        if (distancia(elem, indx1) < distancia(elem, indx2)) {
-            return indx1;
-        } else {
-            return indx2;
-        }
     }
 
     private long distancia(int elem, int indx){
@@ -71,27 +51,31 @@ public class ColocaN implements ControlerInterface{
         }
     }
 
-    private int[] obtenerCercanos(int lInd, int hInd, int x){
-        int length = hInd - lInd;
-        if (length > 2){
-            int[] mitadDer = obtenerCercanos(lInd, x, lInd+(x-lInd)/2);
-            int[] mitadIzq = obtenerCercanos(x, hInd, x+(hInd-x)/2);
+    private int[] obtenerCercanos(int lInd, int hInd){
+        int x = (lInd + hInd)/2;
+        int length = hInd - lInd + 1;
+        if (length > 3){
+            int[] mitadIzq = obtenerCercanos(lInd, x);
+            int[] mitadDer = obtenerCercanos(x + 1, hInd);
 
             int[] cercanos = minimo(mitadDer, mitadIzq);
             long distanciaMinima = distancia(cercanos[0], cercanos[1]);
 
             Integer[] candidatos = buscarCandidatos(lInd, hInd, x, distanciaMinima);
-            for (int punto1 = 0; punto1 < candidatos.length; punto1++){
-                for (int punto2 = 0; punto2 < candidatos.length; punto2++){
+            for (int punto1 = 0; punto1 < candidatos.length - 1; punto1++){
+                for (int punto2 = punto1 + 1; punto2 < candidatos.length; punto2++){
                     long dist = distancia(candidatos[punto1], candidatos[punto2]);
                     if (dist < distanciaMinima){
                         distanciaMinima = dist;
-                        cercanos[0] = punto1;
-                        cercanos[1] = punto2;
+                        cercanos[0] = candidatos[punto1];
+                        cercanos[1] = candidatos[punto2];
                     }
                 }
             }
             return cercanos;
+        } else if (length == 3){
+            int[] parM = minimo(new int[]{lInd, lInd + 1}, new int[]{lInd + 1, hInd});
+            return minimo(parM, new int[]{lInd, hInd});
         } else {
             return new int[]{lInd, hInd};
         }
@@ -101,11 +85,11 @@ public class ColocaN implements ControlerInterface{
         long d1 = distancia(par1[0], par1[1]);
         long d2 = distancia(par2[0], par2[1]);
 
-        if (d1 == 0 && d2 == 0){
+        if (d1 == Long.MAX_VALUE && d2 == Long.MAX_VALUE){
             return new int[]{par1[0], par2[0]};
-        } else if (d1 == 0){
+        } else if (d1 == Long.MAX_VALUE){
             return par2;
-        } else if (d2 == 0){
+        } else if (d2 == Long.MAX_VALUE){
             return par1;
         } else if (d1 < d2){
             return par1;
@@ -118,19 +102,17 @@ public class ColocaN implements ControlerInterface{
 
     private Integer[] buscarCandidatos(int lInd, int hInd, int x, long dMin){
         ArrayList<Integer> candidatos = new ArrayList<>();
-        //buscar menores de X
-        for(int punto = lInd; punto < x; punto++){
-            if (modelo.getCoordenadaX(x) - modelo.getCoordenadaX(punto) < dMin){
-                candidatos.add(punto);
-            }
-        }
-        //buscar mayores de X
-        for(int punto = hInd; punto > x; punto--){
-            if (modelo.getCoordenadaX(punto) - modelo.getCoordenadaX(x) < dMin){
-                candidatos.add(punto);
-            }
-        }
+
+        //lInd <-- X (X included)
+        for (int punto = x; punto > lInd && estaDentroDmin(x, punto, dMin); punto--) candidatos.add(punto);
+        //X ++> hInd (X excluded)
+        for (int punto = x + 1; punto < hInd && estaDentroDmin(x, punto, dMin); punto++) candidatos.add(punto);
+
         Integer[] ret = new Integer[candidatos.size()];
         return candidatos.toArray(ret);
+    }
+
+    private boolean estaDentroDmin(int puntoMedio, int punto, long dMin){
+        return modelo.getCoordenadaX(puntoMedio) - modelo.getCoordenadaX(punto) < dMin;
     }
 }
