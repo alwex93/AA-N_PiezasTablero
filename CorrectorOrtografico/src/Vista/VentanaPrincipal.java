@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VentanaPrincipal extends JFrame{
+public class VentanaPrincipal extends JFrame implements ViewInterface{
     private JButton marcarButton;
     private JButton sustituirButton;
     private JButton personalizadaButton;
@@ -32,7 +32,6 @@ public class VentanaPrincipal extends JFrame{
 
     private final String PATH_TEMPLATES = "recursos";
     private final String TEMPLATE = "template.ftl";
-    private final int SECCION_TEXTO = 10;
 
     private final boolean SUSTITUIR = true;
     private final boolean MARCAR = false;
@@ -40,6 +39,11 @@ public class VentanaPrincipal extends JFrame{
     public VentanaPrincipal() {
         init();
         controler = new Controler();
+        setVisible(false);
+    }
+
+    public void abrirVentana(){
+        setVisible(true);
         new Thread(new Marcador(this, controler)).start();
     }
 

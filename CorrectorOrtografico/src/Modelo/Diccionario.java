@@ -1,15 +1,17 @@
-package Controlador;
+package Modelo;
 
 import org.apache.commons.lang.ArrayUtils;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Diccionario {
+public class Diccionario implements ModelInterface{
 
 
     private String[] diccionario;
     private final int MAXSUSTITUTOS = 5;
     private final int MAXDISTANCIA = 5;
+
+    private final char[] EX_CARACTER = {'.', ',', '!', '?'};
 
     public Diccionario(){
         File file = new File("recursos/ES.dic");
@@ -86,5 +88,9 @@ public class Diccionario {
             }
         }
         return d[pal1.length][pal2.length];
+    }
+
+    public char[] getExpecialCharacters(){
+        return EX_CARACTER;
     }
 }

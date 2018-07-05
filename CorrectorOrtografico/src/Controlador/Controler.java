@@ -1,15 +1,13 @@
 package Controlador;
 
+import Modelo.Diccionario;
+import Modelo.ModelInterface;
 import Vista.Palabra;
 import java.util.ArrayList;
 
 public class Controler implements ControlerInterface{
 
-    private int[][] dist;
-    private Diccionario diccionario;
-
-    private final char[] EX_CARACTER = {'.', ',', '!', '?'};
-
+    private ModelInterface diccionario;
 
     public Controler(){
         diccionario = new Diccionario();
@@ -17,7 +15,6 @@ public class Controler implements ControlerInterface{
 
     @Override
     public Palabra[] comprobar(String texto) {
-        //String[] palabras = texto.replaceAll(",|.", "").split(" ");
         return getPalabras(texto.toLowerCase());
     }
 
@@ -43,7 +40,7 @@ public class Controler implements ControlerInterface{
     private int getPalabra(String texto, int endPal){
         int end = endPal - 1;
         char lastLeter = texto.charAt(end);
-        for (char ex: EX_CARACTER) {
+        for (char ex: diccionario.getExpecialCharacters()) {
             if (lastLeter == ex){
                 return endPal - 1;
             }
