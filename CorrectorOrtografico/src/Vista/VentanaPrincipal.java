@@ -23,8 +23,8 @@ public class VentanaPrincipal extends JFrame{
     private JButton sustituirButton;
     private JButton personalizadaButton;
     private JEditorPane texto;
+    private int cursor;
     private JPanel mainPanel;
-    private JLabel test;
     private ControlerInterface controler;
     private Template temp;
     private VentanaSustitucion avanzadas;
@@ -32,6 +32,7 @@ public class VentanaPrincipal extends JFrame{
 
     private final String PATH_TEMPLATES = "recursos";
     private final String TEMPLATE = "template.ftl";
+    private final int SECCION_TEXTO = 10;
 
     private final boolean SUSTITUIR = true;
     private final boolean MARCAR = false;
@@ -39,7 +40,7 @@ public class VentanaPrincipal extends JFrame{
     public VentanaPrincipal() {
         init();
         controler = new Controler();
-        new Thread(new Marcador(this)).start();
+        new Thread(new Marcador(this, controler)).start();
     }
 
     private void init(){
@@ -105,6 +106,11 @@ public class VentanaPrincipal extends JFrame{
         }
         textoMarcado.append(texto.substring(punteroTexto));
         this.texto.setText(getTemplate(textoMarcado.toString()));
+        try {
+            this.texto.setCaretPosition(cursor + 1);
+        } catch (IllegalArgumentException e){
+            this.texto.setCaretPosition(texto.length() + 1);
+        }
     }
 
     private String alterarPalabra(Palabra pal, String texto){
@@ -115,16 +121,8 @@ public class VentanaPrincipal extends JFrame{
         }
     }
 
-    public void checkTexto(){
-        String texto = getTexto();
-        if (texto.contains(".")){
-            erroneas = controler.comprobar(texto);
-            alterarTexto(MARCAR);
-        }
-
-    }
-
-    private String getTexto(){
+    public String getTexto(){
+        cursor = texto.getCaretPosition();
         Element seccion = Jsoup.parse(texto.getText()).select("p").first();
         if (seccion == null){
             seccion = Jsoup.parse(texto.getText()).select("body").first();
@@ -132,26 +130,10 @@ public class VentanaPrincipal extends JFrame{
         return seccion.text();
     }
 
-    /*private Palabra[] getTest(String texto){
-        String[] palabras = texto.split(" ");
-        Palabra[] ret = new Palabra[palabras.length/2 + palabras.length%2];
-        for (int n = 0, p = 0, punt = 0, init; n < palabras.length; n++){
-            if (n%2 != 1){
-                init = texto.indexOf(palabras[n], punt);
-                ret[p] = new Palabra(palabras[n], init, init + palabras[n].length(), new String[]{palabras[n] + "1"});
-                punt = ret[p].getEndPos();
-                p++;
-            }
-        }
-        return ret;
-    }*/
-
     private String getTemplate(String texto){
         try {
-            /* Get the template (uses cache internally) */
             Map<String, Object> root = new HashMap<>();
             root.put("text", texto);
-            /* Merge data-model with template */
             Writer out = new StringWriter();
             temp.process(root, out);
             return out.toString();
@@ -162,6 +144,11 @@ public class VentanaPrincipal extends JFrame{
 
     public void setText(String text){
         texto.setText(text);
+    }
+
+    public void marcarPalabras(Palabra[] palabras){
+        erroneas = palabras;
+        alterarTexto(MARCAR);
     }
 
 }
