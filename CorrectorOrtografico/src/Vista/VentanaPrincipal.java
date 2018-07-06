@@ -29,6 +29,7 @@ public class VentanaPrincipal extends JFrame implements ViewInterface{
     private Template temp;
     private VentanaSustitucion avanzadas;
     private Palabra[] erroneas;
+    private int pointer;
 
     private final String PATH_TEMPLATES = "recursos";
     private final String TEMPLATE = "template.ftl";
@@ -123,8 +124,7 @@ public class VentanaPrincipal extends JFrame implements ViewInterface{
         } else {//Sustituir
             return "<b color='blue'>" + pal.corregir(0) + "</b>";
         }
-    }
-
+    }s
     public String getTexto(){
         cursor = texto.getCaretPosition();
         Element seccion = Jsoup.parse(texto.getText()).select("p").first();

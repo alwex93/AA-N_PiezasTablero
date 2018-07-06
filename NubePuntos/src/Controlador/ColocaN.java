@@ -15,6 +15,7 @@ public class ColocaN implements ControlerInterface{
         ordenarPuntosPorX(0, modelo.getLenght() - 1); //Order by X O(log(n))
         int[] cercanos = obtenerCercanos(0, modelo.getLenght() - 1);
         modelo.setCercanos(cercanos[0], cercanos[1]);
+        modelo.printInfoPuntos();
     }
 
     private long distancia(int elem, int indx){
@@ -107,7 +108,6 @@ public class ColocaN implements ControlerInterface{
         for (int punto = x; punto > lInd && estaDentroDmin(x, punto, dMin); punto--) candidatos.add(punto);
         //X ++> hInd (X excluded)
         for (int punto = x + 1; punto < hInd && estaDentroDmin(x, punto, dMin); punto++) candidatos.add(punto);
-
         Integer[] ret = new Integer[candidatos.size()];
         return candidatos.toArray(ret);
     }

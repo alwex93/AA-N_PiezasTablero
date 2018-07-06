@@ -23,7 +23,7 @@ public class Diccionario implements ModelInterface{
                 dicContainer.add(bf.readLine());
             }
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         diccionario = new String[dicContainer.size()];
         diccionario = dicContainer.toArray(diccionario);

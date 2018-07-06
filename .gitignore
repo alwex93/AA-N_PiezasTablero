@@ -1,6 +1,9 @@
 .gitignore
 */out/*
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 *.rar
 *.comp
 Huffman/texto.txt

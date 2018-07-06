@@ -2,6 +2,8 @@ package Modelo;
 
 public interface ModelInterface {
 
+    void setPuntos(Punto[] puntos);
+
     int getLenght();
     void setCercanos(int cercano1, int cercano2);
     boolean isEquals(int elem1, int elem2);
