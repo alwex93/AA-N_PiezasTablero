@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Pixel {
 
@@ -16,9 +17,21 @@ public class Pixel {
 
     public void setColorBasico(GammaColores paleta){
         //int clr=  image.getRGB(x,y);
-        int  red   = (color & 0x00ff0000) >> 16;
-        int  green = (color & 0x0000ff00) >> 8;
-        int  blue  =  color & 0x000000ff;
+        colorBasico = paleta.getPrimariColor(color);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pixel pixel = (Pixel) o;
+        return fila == pixel.fila &&
+                columna == pixel.columna;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(fila, columna);
+    }
 }
