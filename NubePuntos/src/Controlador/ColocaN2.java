@@ -15,7 +15,7 @@ public class ColocaN2 implements ControlerInterface{
         int cercano1 = 0, cercano2 = 0;
         long distanciaMinima = Long.MAX_VALUE;
         for (int punto1 = 0; punto1 < modelo.getLenght(); punto1++){
-            for (int punto2 = 0; punto2 < modelo.getLenght(); punto2++){
+            for (int punto2 = punto1 + 1; punto2 < modelo.getLenght(); punto2++){
                 if (distancia(punto1, punto2) < distanciaMinima){
                     distanciaMinima = distancia(punto1, punto2);
                     cercano1 = punto1;
