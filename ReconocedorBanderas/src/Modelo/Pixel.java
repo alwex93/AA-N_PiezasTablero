@@ -5,33 +5,22 @@ import java.util.Objects;
 
 public class Pixel {
 
-    private int fila, columna;
-    private int color;
+    private int rgb;
     private Color colorBasico;
 
-    public Pixel(int fila, int columna, int color){
-        this.fila = fila;
-        this.columna = columna;
-        this.color = color;
+    public Pixel(int color){
+        rgb = color;
     }
 
-    public void setColorBasico(GammaColores paleta){
-        //int clr=  image.getRGB(x,y);
-        colorBasico = paleta.getPrimariColor(color);
+    public Color getColorBasico(GammaColores paleta){
+        return colorBasico = paleta.getPrimariColor(rgb);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pixel pixel = (Pixel) o;
-        return fila == pixel.fila &&
-                columna == pixel.columna;
+    public int getRGB(){
+        return rgb;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(fila, columna);
+    public Color getColor(){
+        return colorBasico;
     }
 }

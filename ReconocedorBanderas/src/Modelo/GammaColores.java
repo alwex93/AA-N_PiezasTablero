@@ -5,9 +5,13 @@ import java.awt.*;
 public class GammaColores {
 
     private final int LINDE_BLANCO = 220;
-    private final int LINDE_NEGRO = 50;
+    private final int LINDE_NEGRO = 60;
 
     public Color getPrimariColor(int color){
+
+        int aRed = (color & 0x00ff0000) >> 16;
+        int aGreen = (color & 0x0000ff00) >> 8;
+        int aBlue = color & 0x000000ff;
 
         int[] rgb = getPrimaryColor((color & 0x00ff0000) >> 16,
                                     (color & 0x0000ff00) >> 8, color & 0x000000ff);
@@ -38,19 +42,19 @@ public class GammaColores {
 
     private int[] getPrimaryColor(int red, int green, int blue){
         int[] color = {0, 0, 0}; //mi rgb
-        if (isInsideLinde(red)){
+        if (hayColor(red)){
             color[0] = 1;
         }
-        if (isInsideLinde(green)){
+        if (hayColor(green)){
             color[1] = 1;
         }
-        if (isInsideLinde(blue)){
+        if (hayColor(blue)){
             color[2] = 1;
         }
         return color;
     }
 
-    private boolean isInsideLinde(int color){
-        return color > LINDE_NEGRO && color < LINDE_BLANCO;
+    private boolean hayColor(int color){
+        return color > LINDE_NEGRO;
     }
 }
