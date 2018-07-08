@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class Ventana extends JFrame implements ViewInterface{
     private JLabel label;
+    private JButton button1;
+    private JButton button2;
 
     public Ventana(){
         Bandera b = new Bandera("Banderas\\Baleares.png");
