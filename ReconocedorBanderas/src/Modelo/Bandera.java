@@ -14,12 +14,14 @@ public class Bandera {
     private BufferedImage content;
     private String nombreBandera;
     private Pixel[] pixels;
+    private String path;
 
     private double numBlack, numWhite;
     private double numRed, numGreen, numBlue;
     private double numMagenta, numYellow, numCyan;
 
     public Bandera(String path){
+        this.path = path;
         numRed = numGreen = numBlue = numMagenta = numYellow = numCyan = numBlack = numWhite = 0;
         if (path.toLowerCase().contains(".jpg")){
             content = readJPG(path);
@@ -141,6 +143,10 @@ public class Bandera {
         return nombreBandera;
     }
 
+    public String getPath(){
+        return path;
+    }
+
     private void contarColores(Color color){
         if (color == Color.BLACK){
             numBlack++;
@@ -159,7 +165,5 @@ public class Bandera {
         } else if (color == Color.CYAN){
             numCyan++;
         }
-
-
     }
 }

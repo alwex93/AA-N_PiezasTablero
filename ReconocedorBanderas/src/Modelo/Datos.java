@@ -32,6 +32,11 @@ public class Datos implements ModelInterface{
     }
 
     @Override
+    public String getBanderaPath(int bandera) {
+        return banderas[bandera].getPath();
+    }
+
+    @Override
     public Icon getBanderaImg(int bandera) {
         return banderas[bandera].getImagen();
     }

@@ -14,9 +14,6 @@ public class Ventana extends JFrame implements ViewInterface{
     private JLabel cantidadPixeles;
     private ModelInterface modelo;
 
-    private final boolean LIMPIAR = true;
-    private final boolean RESTAURAR = false;
-
     public Ventana(ModelInterface modelo){
         this.modelo = modelo;
         setSize(500, 270);
