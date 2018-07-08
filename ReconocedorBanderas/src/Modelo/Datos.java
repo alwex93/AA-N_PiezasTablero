@@ -1,18 +1,17 @@
 package Modelo;
 
+import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-public class Datos {
+public class Datos implements ModelInterface{
 
     private Bandera[] banderas;
+    private Bandera imagenBlanca;
     private GammaColores paleta;
 
-    public Datos(){
+    public Datos(String pathCarpeta){
         paleta = new GammaColores();
-        File[] ficheros = new File("Banderas").listFiles();
+        File[] ficheros = new File(pathCarpeta + "\\Banderas").listFiles();
         if (ficheros != null){
             banderas = new Bandera[ficheros.length];
             for (int bandera = 0; bandera < ficheros.length; bandera++){
@@ -20,7 +19,25 @@ public class Datos {
                 banderas[bandera].definirColoresBasicos(paleta);
             }
         }
-
+        imagenBlanca = new Bandera(pathCarpeta + "\\imagenVacia.jpg");
     }
 
+    @Override
+    public String[] getNameBanderas() {
+        String[] nombres = new String[banderas.length];
+        for(int pos = 0; pos < nombres.length; pos++){
+            nombres[pos] = banderas[pos].getNombreBandera();
+        }
+        return nombres;
+    }
+
+    @Override
+    public Icon getBanderaImg(int bandera) {
+        return banderas[bandera].getImagen();
+    }
+
+    @Override
+    public Icon getImagenBlanca() {
+        return imagenBlanca.getImagen();
+    }
 }

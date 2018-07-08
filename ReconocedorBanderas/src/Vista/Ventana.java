@@ -1,20 +1,52 @@
 package Vista;
 
-import Modelo.Bandera;
+import Modelo.ModelInterface;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Ventana extends JFrame implements ViewInterface{
-    private JLabel label;
-    private JButton button1;
-    private JButton button2;
+    private JComboBox<String> banderas;
+    private JLabel banderaFile;
+    private JSlider numPixeles;
+    private JLabel BanderaAdivinada;
+    private JPanel mainPanel;
+    private JLabel cantidadPixeles;
+    private ModelInterface modelo;
 
-    public Ventana(){
-        Bandera b = new Bandera("Banderas\\Baleares.png");
-        label.setIcon(b.GetImagen());
-        add(label);
-        pack();
+    private final boolean LIMPIAR = true;
+    private final boolean RESTAURAR = false;
+
+    public Ventana(ModelInterface modelo){
+        this.modelo = modelo;
+        setSize(500, 270);
+        init();
         setVisible(false);
+        setLocationRelativeTo(null);
+    }
+
+    private void init(){
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for(String nombreBandera : modelo.getNameBanderas()){
+            model.addElement(nombreBandera);
+        }
+        banderas.setModel(model);
+        BanderaAdivinada.setIcon(modelo.getImagenBlanca());
+        BanderaAdivinada.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        banderaFile.setIcon(modelo.getImagenBlanca());
+        banderaFile.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+
+        banderas.addActionListener(ev -> {
+            banderaFile.setIcon(modelo.getBanderaImg(banderas.getSelectedIndex()));
+        });
+
+        numPixeles.addChangeListener(ev -> {
+            cantidadPixeles.setText(numPixeles.getValue() + "%");
+        });
+        cantidadPixeles.setText(numPixeles.getValue() + "%");
+
+        add(mainPanel);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 

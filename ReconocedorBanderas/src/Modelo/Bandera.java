@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,6 +12,7 @@ import java.math.RoundingMode;
 public class Bandera {
 
     private BufferedImage content;
+    private String nombreBandera;
     private Pixel[] pixels;
 
     private double numBlack, numWhite;
@@ -23,10 +23,19 @@ public class Bandera {
         numRed = numGreen = numBlue = numMagenta = numYellow = numCyan = numBlack = numWhite = 0;
         if (path.toLowerCase().contains(".jpg")){
             content = readJPG(path);
+            path = path.replace(".jpg", "");
         } else if (path.toLowerCase().contains(".png")){
             //content = readPNG(path);
+            path = path.replace(".png", "");
         }
+        nombreBandera = limpiarNombre(path);
+    }
 
+    private String limpiarNombre(String path){
+        while (path.contains("\\")){
+            path = path.substring(path.indexOf("\\") + 1);
+        }
+        return path.replace("_", " ");
     }
 
     private BufferedImage readJPG(String path){
@@ -70,7 +79,7 @@ public class Bandera {
         }
     }*/
 
-    public Icon GetImagen(){
+    public Icon getImagen(){
         return new ImageIcon(content);
     }
 
@@ -126,6 +135,10 @@ public class Bandera {
 
     public double getNumCyan() {
         return numCyan;
+    }
+
+    public String getNombreBandera() {
+        return nombreBandera;
     }
 
     private void contarColores(Color color){
