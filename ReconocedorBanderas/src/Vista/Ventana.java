@@ -67,11 +67,13 @@ public class Ventana extends JFrame implements ViewInterface{
         });
 
         numPixeles.addChangeListener(ev -> {
-            cantidadPixeles.setText(numPixeles.getValue() + "%");
             int banderaSeleccionada = banderas.getSelectedIndex() - 1;
-            Bandera adivinada = controler.adivinarImagen(banderaSeleccionada, numPixeles.getValue());
-            banderaAdivinada.setIcon(adivinada.getImagen());
-            adivinadaName.setText(adivinada.getNombreBandera());
+            if (banderaSeleccionada > 0){
+                cantidadPixeles.setText(numPixeles.getValue() + "%");
+                Bandera adivinada = controler.adivinarImagen(banderaSeleccionada, numPixeles.getValue());
+                banderaAdivinada.setIcon(adivinada.getImagen());
+                adivinadaName.setText(adivinada.getNombreBandera());
+            }
         });
         cantidadPixeles.setText(numPixeles.getValue() + "%");
 
