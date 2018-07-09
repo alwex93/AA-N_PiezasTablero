@@ -13,7 +13,7 @@ public class Datos implements ModelInterface{
     private GammaColores paleta;
     private Random rnd;
 
-    private double CONFIANZA = 10;
+    private double CONFIANZA = 9;
 
     public Datos(String pathCarpeta){
         paleta = new GammaColores();
