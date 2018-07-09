@@ -2,19 +2,23 @@ package Modelo;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class Datos implements ModelInterface{
 
     private Bandera[] banderas;
     private Bandera imagenBlanca;
     private GammaColores paleta;
+    private Random rnd;
 
-    private final double CONFIANZA = 0.5;
+    private double CONFIANZA = 10;
 
     public Datos(String pathCarpeta){
         paleta = new GammaColores();
         cargarBanderas(pathCarpeta);
-
+        rnd = new Random();
     }
 
     private void cargarBanderas(String pathCarpeta){
@@ -51,8 +55,19 @@ public class Datos implements ModelInterface{
     }
 
     private int checkBandera(Bandera banderaComprobar) {
-        int bandera;
-        for (bandera = 0; bandera < banderas.length && !tienenMismoColor(banderas[bandera], banderaComprobar); bandera++);
+        int bandera = banderas.length;
+        //generar orden aleatorio
+        Set<Integer> posBandera = new LinkedHashSet<>();
+        while(posBandera.size() < banderas.length){
+            posBandera.add(Math.abs(rnd.nextInt()% banderas.length));
+        }
+        //recorrer orden generado
+        for(int pos : posBandera){
+            if (tienenMismoColor(banderas[pos], banderaComprobar)){
+                bandera = pos;
+                break;
+            }
+        }
         return bandera;
     }
 

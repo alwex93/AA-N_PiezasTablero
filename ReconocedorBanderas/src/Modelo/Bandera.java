@@ -108,17 +108,20 @@ public class Bandera {
         for (Pixel pixel : pixels) {
             contarColores(pixel.getColorBasico(paleta));
         }
-        numBlack = getPorcentaje(numBlack/totalPixeles);
-        numWhite = getPorcentaje(numWhite/totalPixeles);
+        if (totalPixeles == 0){
+            numRed = numGreen = numBlue = numMagenta = numYellow = numCyan = numBlack = numWhite = 0;
+        } else {
+            numBlack = getPorcentaje(numBlack/totalPixeles);
+            numWhite = getPorcentaje(numWhite/totalPixeles);
 
+            numRed = getPorcentaje(numRed/totalPixeles);
+            numGreen = getPorcentaje(numGreen/totalPixeles);
+            numBlue = getPorcentaje(numBlue/totalPixeles);
 
-        numRed = getPorcentaje(numRed/totalPixeles);
-        numGreen = getPorcentaje(numGreen/totalPixeles);
-        numBlue = getPorcentaje(numBlue/totalPixeles);
-
-        numMagenta = getPorcentaje(numMagenta/totalPixeles);
-        numYellow = getPorcentaje(numYellow/totalPixeles);
-        numCyan = getPorcentaje(numCyan/totalPixeles);
+            numMagenta = getPorcentaje(numMagenta/totalPixeles);
+            numYellow = getPorcentaje(numYellow/totalPixeles);
+            numCyan = getPorcentaje(numCyan/totalPixeles);
+        }
     }
 
     private double getPorcentaje(double num){
