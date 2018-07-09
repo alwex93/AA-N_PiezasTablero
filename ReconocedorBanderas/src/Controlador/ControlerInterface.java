@@ -1,8 +1,8 @@
 package Controlador;
 
-import javax.swing.*;
+import Modelo.Bandera;
 
 public interface ControlerInterface {
 
-    Icon adivinarImagen(int bandera, int numPixeles);
+    Bandera adivinarImagen(int bandera, int numPixeles);
 }

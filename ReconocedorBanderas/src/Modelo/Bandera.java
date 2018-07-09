@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class Bandera {
     private String nombreBandera;
     private Pixel[] pixels;
     private String path;
+    private Random rnd;
 
     private double numBlack, numWhite;
     private double numRed, numGreen, numBlue;
@@ -25,6 +27,7 @@ public class Bandera {
 
     public Bandera(String path, int numPixeles){
         this.path = path;
+        rnd = new Random();
         numRed = numGreen = numBlue = numMagenta = numYellow = numCyan = numBlack = numWhite = 0;
         if (path.toLowerCase().contains(".jpg")){
             initBandera(path, numPixeles);
@@ -82,7 +85,6 @@ public class Bandera {
     }
 
     public int[] randomPixeles(int numPixeles, int[] pixeles){
-        Random rnd = new Random();
         Set<Integer> posPixeles = new LinkedHashSet<>();
         while(posPixeles.size() < numPixeles){
             posPixeles.add(Math.abs(rnd.nextInt()% pixeles.length));
@@ -182,4 +184,13 @@ public class Bandera {
             numCyan++;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bandera bandera = (Bandera) o;
+        return Objects.equals(nombreBandera, bandera.nombreBandera);
+    }
+
 }

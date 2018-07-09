@@ -9,10 +9,15 @@ public class Datos implements ModelInterface{
     private Bandera imagenBlanca;
     private GammaColores paleta;
 
-    private final double CONFIANZA = 1.0;
+    private final double CONFIANZA = 0.5;
 
     public Datos(String pathCarpeta){
         paleta = new GammaColores();
+        cargarBanderas(pathCarpeta);
+
+    }
+
+    private void cargarBanderas(String pathCarpeta){
         File[] ficheros = new File(pathCarpeta).listFiles();
         if (ficheros != null){
             banderas = new Bandera[ficheros.length];
@@ -21,23 +26,22 @@ public class Datos implements ModelInterface{
                 banderas[bandera].definirColoresBasicos(paleta);
             }
         }
-
     }
 
     @Override
-    public Icon cargarBanderaAdivinar(int bandera, int porcentajePixeles){
+    public Bandera cargarBanderaAdivinar(int bandera, int porcentajePixeles){
         Bandera adivinar = new Bandera(banderas[bandera].getPath(), porcentajePixeles);
         adivinar.definirColoresBasicos(paleta);
         if (checkBandera(adivinar) < banderas.length){
-            return banderas[bandera].getImagen();
+            return banderas[bandera];
         } else {
-            return imagenBlanca.getImagen();
+            return imagenBlanca;
         }
     }
 
     @Override
-    public void CambiarCarpeta(String nombreCarpeta) {
-
+    public void CambiarCarpeta(String rutaCarpeta) {
+        cargarBanderas(rutaCarpeta);
     }
 
     @Override
@@ -81,6 +85,11 @@ public class Datos implements ModelInterface{
             nombres[pos] = banderas[pos].getNombreBandera();
         }
         return nombres;
+    }
+
+    @Override
+    public String getNameBandera(int bandera) {
+        return banderas[bandera].getNombreBandera();
     }
 
     @Override

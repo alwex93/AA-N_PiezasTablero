@@ -1,7 +1,7 @@
 package Controlador;
 
+import Modelo.Bandera;
 import Modelo.ModelInterface;
-import javax.swing.Icon;
 
 public class ProbabilisticoMonteCarlo implements ControlerInterface{
 
@@ -12,7 +12,7 @@ public class ProbabilisticoMonteCarlo implements ControlerInterface{
     }
 
     @Override
-    public Icon adivinarImagen(int bandera, int porcentajePixeles){
+    public Bandera adivinarImagen(int bandera, int porcentajePixeles){
        return modelo.cargarBanderaAdivinar(bandera, porcentajePixeles);
     }
 
