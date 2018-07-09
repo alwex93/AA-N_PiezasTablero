@@ -10,7 +10,7 @@ public class mainProgram {
 
     public static void main(String[] args){
 
-        ModelInterface datos = new Datos("Imagenes");
+        ModelInterface datos = new Datos();
         new Ventana(datos).abrirVentana();
     }
 

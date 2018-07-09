@@ -21,6 +21,11 @@ public class Datos implements ModelInterface{
         rnd = new Random();
     }
 
+    public Datos(){
+        paleta = new GammaColores();
+        rnd = new Random();
+    }
+
     private void cargarBanderas(String pathCarpeta){
         File[] ficheros = new File(pathCarpeta).listFiles();
         if (ficheros != null){
