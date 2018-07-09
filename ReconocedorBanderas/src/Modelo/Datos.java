@@ -22,7 +22,7 @@ public class Datos implements ModelInterface{
         if (ficheros != null){
             banderas = new Bandera[ficheros.length];
             for (int bandera = 0; bandera < ficheros.length; bandera++){
-                banderas[bandera] = new Bandera(ficheros[bandera].getPath(), 0);
+                banderas[bandera] = new Bandera(ficheros[bandera].getPath(), 100);
                 banderas[bandera].definirColoresBasicos(paleta);
             }
         }
@@ -32,8 +32,9 @@ public class Datos implements ModelInterface{
     public Bandera cargarBanderaAdivinar(int bandera, int porcentajePixeles){
         Bandera adivinar = new Bandera(banderas[bandera].getPath(), porcentajePixeles);
         adivinar.definirColoresBasicos(paleta);
-        if (checkBandera(adivinar) < banderas.length){
-            return banderas[bandera];
+        int masParecida = checkBandera(adivinar);
+        if (masParecida < banderas.length){
+            return banderas[masParecida];
         } else {
             return imagenBlanca;
         }
@@ -46,21 +47,16 @@ public class Datos implements ModelInterface{
 
     @Override
     public void setImagenBlanca(String path) {
-        imagenBlanca = new Bandera(path, 0);
+        imagenBlanca = new Bandera(path, 100);
     }
 
     private int checkBandera(Bandera banderaComprobar) {
-        boolean esLaVandera;
-        int bandera = 0;
-        do{
-            esLaVandera = comprobarColores(banderas[bandera], banderaComprobar);
-            bandera++;
-        } while(!esLaVandera && bandera < banderas.length);
-
+        int bandera;
+        for (bandera = 0; bandera < banderas.length && !tienenMismoColor(banderas[bandera], banderaComprobar); bandera++);
         return bandera;
     }
 
-    private boolean comprobarColores(Bandera comprobar, Bandera bandera){
+    private boolean tienenMismoColor(Bandera comprobar, Bandera bandera){
         return tieneColor(comprobar.getNumBlack(), bandera.getNumBlack())       && //Negro
                 tieneColor(comprobar.getNumWhite(), bandera.getNumWhite())      && //Blanco
 

@@ -65,7 +65,7 @@ public class Bandera {
     private Pixel[] getPixeles(int porcentajePixeles, int[] pixeles){
         Pixel[] ret;
         int numPixeles;
-        if(porcentajePixeles == 0 || porcentajePixeles == 100){
+        if(porcentajePixeles == 100){
             ret = new Pixel[pixeles.length];
             for(int pos = 0; pos < pixeles.length; pos++){
                 ret[pos] = new Pixel(pixeles[pos]);
