@@ -28,7 +28,7 @@ public class Ventana extends JFrame implements ViewInterface{
     public Ventana(ModelInterface modelo){
         this.modelo = modelo;
         this.controler = new ProbabilisticoMonteCarlo(modelo);
-        setSize(530, 270);
+        setSize(620, 270);
         init();
         setVisible(false);
         setResizable(false);
