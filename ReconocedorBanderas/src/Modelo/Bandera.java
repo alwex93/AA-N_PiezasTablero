@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class Bandera {
 
@@ -20,11 +23,11 @@ public class Bandera {
     private double numRed, numGreen, numBlue;
     private double numMagenta, numYellow, numCyan;
 
-    public Bandera(String path){
+    public Bandera(String path, int numPixeles){
         this.path = path;
         numRed = numGreen = numBlue = numMagenta = numYellow = numCyan = numBlack = numWhite = 0;
         if (path.toLowerCase().contains(".jpg")){
-            content = readJPG(path);
+            initBandera(path, numPixeles);
             path = path.replace(".jpg", "");
         } else if (path.toLowerCase().contains(".png")){
             //content = readPNG(path);
@@ -40,46 +43,59 @@ public class Bandera {
         return path.replace("_", " ");
     }
 
+    private void initBandera(String path, int porcentajePixeles){
+        content = readJPG(path);
+        if (content != null) {
+            pixels = getPixeles(porcentajePixeles,
+                    content.getRGB(0, 0, content.getWidth(), content.getHeight(), null, 0, content.getWidth()));
+        }
+    }
+
     private BufferedImage readJPG(String path){
-        BufferedImage img;
         try {
-            img = ImageIO.read(new File(path));
-            int[] colores = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
-            pixels = new Pixel[colores.length];
-            for(int pos = 0; pos < colores.length; pos++){
-                pixels[pos] = new Pixel(colores[pos]);
-            }
-            return img;
+            return ImageIO.read(new File(path));
         } catch (IOException e){
             return null;
         }
     }
-    //Opcional, si hay tiempo
-    /*private BufferedImage readPNG(String path){
-        BufferedImage img;
-        try {
-            img = ImageIO.read(new File(path));
-            DataBuffer bf = img.getRaster().getDataBuffer();
-            System.out.println(bf.getSize());
-            pixels = new Pixel[bf.getSize()/4 - 1];
-            int dataBuffer = 0;
-            for (int pixel = 0; pixel < bf.getSize()/4; pixel++){
-                if (dataBuffer + 4 < bf.getSize()){
-                    int p1 = bf.getElem(dataBuffer++);
-                    int p2 = bf.getElem(dataBuffer++);
-                    int p3 = bf.getElem(dataBuffer++);
-                    int p4 = bf.getElem(dataBuffer++);
-                    System.out.println("Pixel[" + pixel + "]: " + p1 + "," + p2 + "," + p3 + "," + p4);
-                    //pixels[pixel] = new Pixel(p2, p3, p4);
-                } else {
-                    break; //Si no hay mas colores en el buffer --> acaba
-                }
+
+    private Pixel[] getPixeles(int porcentajePixeles, int[] pixeles){
+        Pixel[] ret;
+        int numPixeles;
+        if(porcentajePixeles == 0 || porcentajePixeles == 100){
+            ret = new Pixel[pixeles.length];
+            for(int pos = 0; pos < pixeles.length; pos++){
+                ret[pos] = new Pixel(pixeles[pos]);
             }
-            return img;
-        } catch (IOException e){
-            return null;
+            return ret;
+        } else {
+            numPixeles = new BigDecimal(pixeles.length*((double)porcentajePixeles/100)).intValue();
+            ret = new Pixel[numPixeles];
+            pixeles = randomPixeles(numPixeles, pixeles);
+
+            for(int pos = 0; pos < numPixeles; pos++){
+                ret[pos] = new Pixel(pixeles[pos]);
+            }
+
+            return ret;
         }
-    }*/
+    }
+
+    public int[] randomPixeles(int numPixeles, int[] pixeles){
+        Random rnd = new Random();
+        Set<Integer> posPixeles = new LinkedHashSet<>();
+        while(posPixeles.size() < numPixeles){
+            posPixeles.add(Math.abs(rnd.nextInt()% pixeles.length));
+        }
+
+        int[] seleccionPixeles = new int[numPixeles];
+        int selPos = 0;
+        for(int pos : posPixeles){
+            seleccionPixeles[selPos] = pixeles[pos];
+            selPos++;
+        }
+        return seleccionPixeles;
+    }
 
     public Icon getImagen(){
         return new ImageIcon(content);

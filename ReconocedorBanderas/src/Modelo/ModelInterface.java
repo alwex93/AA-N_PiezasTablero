@@ -5,9 +5,11 @@ import javax.swing.*;
 public interface ModelInterface {
 
     //funciones del controlador
-    String getBanderaPath(int bandera);
+    Icon cargarBanderaAdivinar(int bandera, int numPixeles);
 
     //funciones de la vista
+    void CambiarCarpeta(String nombreCarpeta);
+    void setImagenBlanca(String path);
     String[] getNameBanderas();
     Icon getBanderaImg(int bandera);
     Icon getImagenBlanca();
